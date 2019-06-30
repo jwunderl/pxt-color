@@ -34,11 +34,53 @@ namespace color {
         }
     }
 
+    class TransitionState {
+        constructor(
+            public state: PaletteTransition,
+            public scene: scene.Scene
+        ) { }
+    }
+
     let activeTransition: PaletteTransition;
-    let started = false;
+    let currentScene: scene.Scene;
+
+    let transitionStack: TransitionState[];
+
+    game.addScenePushHandler(() => {
+        if (currentScene) {
+            if (!transitionStack) transitionStack = [];
+
+            transitionStack.push(
+                new TransitionState(
+                    activeTransition,
+                    currentScene
+                )
+            );
+
+            activeTransition = undefined;
+            currentScene = undefined;
+        }
+    });
+
+    game.addScenePopHandler(() => {
+        const scene = game.currentScene();
+        currentScene = undefined;
+        activeTransition = undefined;
+
+        if (transitionStack && transitionStack.length) {
+            const nextState = transitionStack.pop();
+            if (nextState.scene === scene) {
+                activeTransition = nextState.state;
+                currentScene = nextState.scene;
+            } else {
+                transitionStack.push(nextState);
+            }
+        }
+    });
+
 
     function init() {
-        if (!started) {
+        if (!currentScene) {
             game.forever(() => {
                 if (activeTransition) {
                     const finished = activeTransition.step();
@@ -47,13 +89,14 @@ namespace color {
                     }
                 }
             });
-            started = true;
+            currentScene = game.currentScene();
         }
     }
 
-    function startPaletteTransition(start: Palette, end: Palette, duration: number) {
+    export function startPaletteTransition(start: Palette, end: Palette, duration: number) {
         if (!start || !end || start.length !== end.length)
             return;
+
         init();
         activeTransition = new PaletteTransition(start, end, duration);
     }

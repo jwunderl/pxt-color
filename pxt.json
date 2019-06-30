@@ -9,7 +9,8 @@
         "README.md",
         "main.ts",
         "color.ts",
-        "transition.ts"
+        "transition.ts",
+        "palettes.ts"
     ],
     "testFiles": [
         "test.ts"
