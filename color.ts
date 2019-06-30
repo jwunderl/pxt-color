@@ -40,7 +40,7 @@ namespace color {
             this.buf[start + 2] = b(color);
         }
 
-        getColor(index: number): Color {
+        color(index: number): Color {
             if (index < 0 || index >= this.length)
                 return -1;
 
@@ -77,7 +77,7 @@ namespace color {
         const copyLength = 3 * Math.clamp(0, availableColors(), length);
 
         for (let i = 0; i < copyLength; i++) {
-            currentColors[toStart + i] = palette.getColor(fromStart + i);
+            currentColors[toStart + i] = palette.color(fromStart + i);
         }
 
         image.setPalette(currentColors);
@@ -128,20 +128,14 @@ namespace color {
         if (steps < 2)
             return undefined;
 
-        const r1 = r(start);
-        const g1 = g(start);
-        const b1 = b(start);
-
-        const rSlope = colorSlope(r1, r(end), steps);
-        const gSlope = colorSlope(g1, g(end), steps);
-        const bSlope = colorSlope(b1, b(end), steps);
-
         const grad = new Palette(steps);
 
         grad.setColor(0, start);
         grad.setColor(steps - 1, end);
+
         for (let i = 1; i < steps - 1; i++) {
-            grad.setColor(i, toColor(r1 - i * rSlope, g1 - i * gSlope, b1 - i * bSlope));
+            const col = partialColorTransition(start, end, i / steps);
+            grad.setColor(i, col);
         }
 
         return grad;
@@ -149,6 +143,31 @@ namespace color {
 
     function colorSlope(a: Color, b: Color, steps: number) {
         return (a - b) / steps;
+    }
+
+    /**
+     * Returns the color that is the given percentage between start and end
+     *
+     * @param start the initial color (returned if percent is <= 0)
+     * @param end the final color (returned if percent is >= 1)
+     * @param the percentage between 0 and 1
+     */
+    export function partialColorTransition(start: Color, end: Color, percentage: number) {
+        if (percentage <= 0) return start;
+        else if (percentage >= 1) return end;
+        const r1 = r(start);
+        const g1 = g(start);
+        const b1 = b(start);
+
+        const rDiff = r1 - r(end);
+        const gDiff = g1 - g(end);
+        const bDiff = b1 - b(end);
+
+        return toColor(
+            r1 - Math.round(rDiff * percentage),
+            g1 - Math.round(gDiff * percentage),
+            b1 - Math.round(bDiff * percentage)
+        );
     }
 
     /**
@@ -170,6 +189,8 @@ namespace color {
     function b(color: number): Color {
         return color & 0xff;
     }
+
+    // combine the r, g, and b components into a single number
     function toColor(r: number, g: number, b: number): Color {
         return ((r & 0xff) << 16) | ((g & 0xff) << 8) | (b & 0xff);
     }
