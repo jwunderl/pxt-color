@@ -1,6 +1,12 @@
 namespace color {
+    /**
+     * The default palette buffer for the project
+     */
     //% whenUsed
-    export const AdaFruit = hexToPalette([
+    export const defaultPalette = bufferToPalette(hex`__palette`);
+
+    //% whenUsed
+    export const AdaFruit = hexArrayToPalette([
         0x000000,
         0x17ABFF,
         0xDF2929,
@@ -20,7 +26,7 @@ namespace color {
     ]);
 
     //% whenUsed
-    export const Arcade = hexToPalette([
+    export const Arcade = hexArrayToPalette([
         0x000000,
         0xFFFFFF,
         0xFF2121,
@@ -40,7 +46,7 @@ namespace color {
     ]);
 
     //% whenUsed
-    export const Matte = hexToPalette([
+    export const Matte = hexArrayToPalette([
         0x000000,
         0x1D2B53,
         0x7E2553,
@@ -58,6 +64,4 @@ namespace color {
         0xFF77A8,
         0xFFCCAA
     ]);
-
-
 } 

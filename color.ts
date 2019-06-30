@@ -1,9 +1,4 @@
 namespace color {
-    /**
-     * The default palette buffer for the project
-     */
-    export const defaultPalette = hex`__palette`;
-
     // A color in hex format, between 0x000000 and 0xFFFFFF
     export type Color = number;
     let currentColors: Buffer;
@@ -55,6 +50,24 @@ namespace color {
         buffer(): Buffer {
             return this.buf.slice();
         }
+
+        loadBuffer(buf: Buffer) {
+            this.buf = buf;
+        }
+
+        toHexArray() {
+            const output: Color[] = [];
+
+            for (let i = 0; i < this.length; ++i) {
+                output.push(this.color(i));
+            }
+
+            return output;
+        }
+
+        toString(): string {
+            return this.toHexArray().join(",");
+        }
     }
 
     /**
@@ -67,7 +80,7 @@ namespace color {
      */
     export function setUserColors(palette: Palette, start = 0, length = 0, paletteOffset = 0) {
         if (!currentColors)
-            currentColors = defaultPalette.slice();
+            currentColors = defaultPalette.buffer();
         if (!length || length > palette.length)
             length = palette.length;
 
@@ -84,27 +97,33 @@ namespace color {
     }
 
     export function resetColorsToDefault() {
-        image.setPalette(defaultPalette);
+        setUserColors(defaultPalette);
     }
 
     /**
      * Returns the number of colors available in the palette
      */
     export function availableColors(): number {
-        return defaultPalette.length / 3;
+        return defaultPalette.length;
     }
 
     /**
      * Converts an array of RGB colors into a palette buffer
      */
     export function rgbToPalette(colors: RGB[]): Palette {
-        return hexToPalette(colors && colors.map(rgbToNumber));
+        return hexArrayToPalette(colors && colors.map(rgbToNumber));
+    }
+
+    export function bufferToPalette(buf: Buffer): Palette {
+        const p = new Palette(buf.length / 3);
+        p.loadBuffer(buf);
+        return p;
     }
 
     /**
      * Converts an array of hex colors into a palette buffer
      */
-    export function hexToPalette(colors: Color[]): Palette {
+    export function hexArrayToPalette(colors: Color[]): Palette {
         const numColors = Math.min(colors.length, availableColors());
         const p = new Palette(numColors);
 
@@ -155,18 +174,19 @@ namespace color {
     export function partialColorTransition(start: Color, end: Color, percentage: number) {
         if (percentage <= 0) return start;
         else if (percentage >= 1) return end;
+
         const r1 = r(start);
         const g1 = g(start);
         const b1 = b(start);
 
-        const rDiff = r1 - r(end);
-        const gDiff = g1 - g(end);
-        const bDiff = b1 - b(end);
+        const rDiff = r(end) - r1;
+        const gDiff = g(end) - g1;
+        const bDiff = b(end) - b1;
 
         return toColor(
-            r1 - Math.round(rDiff * percentage),
-            g1 - Math.round(gDiff * percentage),
-            b1 - Math.round(bDiff * percentage)
+            r1 + Math.round(rDiff * percentage),
+            g1 + Math.round(gDiff * percentage),
+            b1 + Math.round(bDiff * percentage)
         );
     }
 

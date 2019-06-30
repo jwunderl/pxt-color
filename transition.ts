@@ -2,7 +2,7 @@ namespace color {
     class PaletteTransition {
         protected startTime: number;
 
-        constructor (
+        constructor(
             public start: Palette,
             public end: Palette,
             public duration: number
@@ -23,6 +23,7 @@ namespace color {
                         this.end.color(i),
                         time / this.duration
                     );
+                    p.setColor(i, col);
                 }
 
                 color.setUserColors(p);
@@ -99,6 +100,12 @@ namespace color {
 
         init();
         activeTransition = new PaletteTransition(start, end, duration);
+    }
+
+    export function pauseUntilTransitionComplete() {
+        if (activeTransition) {
+            pauseUntil(() => !activeTransition);
+        }
     }
 
 } 
