@@ -23,8 +23,8 @@ namespace color {
     export class Palette {
         protected buf: Buffer;
 
-        constructor(length: number) {
-            this.buf = control.createBuffer((length | 0) * 3);
+        constructor(length = 0xF) {
+            this.buf = control.createBuffer((length) * 3);
         }
 
         get length() {
@@ -32,7 +32,6 @@ namespace color {
         }
 
         setColor(index: number, color: Color) {
-            index = index | 0;
             if (index < 0 || index >= this.length) return;
 
             const start = index * 3;
@@ -42,7 +41,6 @@ namespace color {
         }
 
         getColor(index: number): Color {
-            index = index | 0;
             if (index < 0 || index >= this.length)
                 return -1;
 
