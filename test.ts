@@ -153,6 +153,15 @@ new color.PaletteTransition()
     .pauseUntilDone()
     .reverse()
     .start(2000)
-    .pauseUntilDone();
+    .pauseUntilDone()
+    .reverse()
+    .mapEndRGB(rgb => {
+        rgb.red -= 0xFF;
+        rgb.green -= 0xFF;
+        rgb.blue -= 0xFF;
+
+        return rgb;
+    })
+    .start(1000);
 
 // color.startTransitionUntilDone(color.currentPalette(), color.White, 2000);
