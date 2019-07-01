@@ -65,7 +65,7 @@ namespace color {
         }
 
         loadBuffer(buf: Buffer) {
-            this.buf = buf;
+            this.buf = buf.slice();
         }
 
         toHexArray() {

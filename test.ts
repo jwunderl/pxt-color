@@ -128,8 +128,6 @@ scene.setBackgroundColor(0xF);
 // color.startTransition(color.Arcade, color.AdaFruit, 2000);
 color.startTransition(color.AdaFruit, color.Matte, 2000);
 color.pauseUntilTransitionDone();
-console.log("got here")
-pause(500)
 
 // const grayArcade = color.Arcade.clone();
 // grayArcade.setColor(0xF, 0x737373);
@@ -152,6 +150,6 @@ const myTransition = new color.PaletteTransition()
     .setEndColor(0xC, 0x678987)
     .setEndColor(0xD, 0x123456)
     .setEndColor(0xF, 0xFFFFFF)
-    .start(2000);
+    .start(3000);
 
 
