@@ -1,17 +1,67 @@
-namespace color.transition {
-    class PaletteTransition {
+namespace color {
+    export class PaletteTransition {
         protected startTime: number;
+        public start: Palette;
+        public end: Palette;
+        public duration: number;
+        protected active: boolean;
 
-        constructor(
-            public start: Palette,
-            public end: Palette,
-            public duration: number
-        ) {
-            this.startTime = game.runtime();
-            color.setUserColors(start);
+        constructor(duration = 1000) {
+            this.duration = duration;
+            this.active = false;
         }
 
-        step(): boolean {
+        public isActive() {
+            return this.active;
+        }
+
+        public activate() {
+            this.active = true;
+            if (!this.start) {
+                this.start = currentPalette();
+            }
+            this.startTime = game.runtime();
+            color.setUserColors(this.start);
+        }
+
+        public stop() {
+            this.active = false;
+            this.start = undefined;
+        }
+
+        public setStartPalette(colors: Palette): PaletteTransition {
+            this.start = colors;
+            return this;
+        }
+
+        public setStartColor(index: number, col: Color): PaletteTransition {
+            if (!this.start) {
+                this.start = currentPalette();
+            }
+
+            this.start.setColor(index, col);
+            return this;
+        }
+
+        public setEndPalette(colors: Palette): PaletteTransition {
+            this.end = colors;
+            return this;
+        }
+
+        public setEndColor(index: number, col: Color): PaletteTransition {
+            if (!this.end) {
+                this.end = currentPalette();
+            }
+
+            this.end.setColor(index, col);
+            return this;
+        }
+
+        public step(): boolean {
+            if (!this.end || !this.active) {
+                return true;
+            }
+
             const time = game.runtime() - this.startTime;
 
             if (time < this.duration) {
@@ -83,7 +133,7 @@ namespace color.transition {
     function init() {
         if (!currentScene) {
             game.forever(() => {
-                if (activeTransition) {
+                if (activeTransition && activeTransition.isActive()) {
                     const finished = activeTransition.step();
                     if (finished) {
                         activeTransition = undefined;
@@ -94,12 +144,15 @@ namespace color.transition {
         }
     }
 
-    export function start(start: Palette, end: Palette, duration: number) {
+    export function startTransition(start: Palette, end: Palette, duration: number) {
         if (!start || !end || start.length !== end.length)
             return;
 
         init();
-        activeTransition = new PaletteTransition(start, end, duration);
+        activeTransition = new PaletteTransition(duration);
+        activeTransition.setStartPalette(start);
+        activeTransition.setEndPalette(end);
+        activeTransition.activate()
     }
 
     export function pauseUntilDone() {

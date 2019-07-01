@@ -274,6 +274,12 @@ namespace color {
         );
     }
 
+    export function currentPalette() {
+        const p = new Palette(availableColors());
+        p.loadBuffer(currentColors);
+        return p;
+    }
+
     // return components of color
     function red(color: number): Color {
         return (color >> 16) & 0xff;
