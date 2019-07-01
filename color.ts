@@ -223,7 +223,7 @@ namespace color {
      * 
      * based off https://stackoverflow.com/questions/2353211/hsl-to-rgb-color-conversion
      */
-    export function hslToNumber(hsl: HSL): number {
+    export function hslToNumber(hsl: HSL): Color {
         let r0 = hsl.luminosity;
         let g0 = hsl.luminosity;
         let b0 = hsl.luminosity;
