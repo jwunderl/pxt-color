@@ -23,6 +23,11 @@ namespace color {
             return this;
         }
 
+        public startUntilDone(duration?: number): Fade {
+            this.start(duration);
+            return this.pauseUntilDone();
+        }
+
         public stop(): Fade {
             this.startPalette = undefined;
             return this;
