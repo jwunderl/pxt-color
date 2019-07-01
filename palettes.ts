@@ -6,7 +6,7 @@ namespace color {
     export const defaultPalette = bufferToPalette(hex`__palette`);
 
     //% whenUsed
-    export const AdaFruit = hexArrayToPalette([
+    export const Adafruit = hexArrayToPalette([
         0x000000,
         0x17ABFF,
         0xDF2929,
