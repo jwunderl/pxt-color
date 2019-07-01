@@ -7,7 +7,6 @@
     },
     "files": [
         "README.md",
-        "main.ts",
         "color.ts",
         "transition.ts",
         "palettes.ts"
