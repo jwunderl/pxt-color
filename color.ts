@@ -87,7 +87,7 @@ namespace color {
 
         setColor(index: number, color: Color) {
             if (index < 0 || index >= this.length) return;
-            if (color < 0 || color >= 0xFFFFFF) return;
+            if (color < 0 || color > 0xFFFFFF) return;
 
             const start = index * 3;
             this.buf[start] = red(color);

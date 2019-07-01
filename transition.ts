@@ -95,7 +95,7 @@ namespace color {
         }
 
         public pauseUntilDone(): Fade {
-            pauseUntil(() => this.startTime === undefined);
+            pauseUntil(() => this.startTime === undefined || game.runtime() > this.startTime + this.duration);
             return this;
         }
 
