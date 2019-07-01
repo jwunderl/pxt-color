@@ -1,4 +1,4 @@
-namespace color {
+namespace color.transition {
     class PaletteTransition {
         protected startTime: number;
 
@@ -94,7 +94,7 @@ namespace color {
         }
     }
 
-    export function startPaletteTransition(start: Palette, end: Palette, duration: number) {
+    export function start(start: Palette, end: Palette, duration: number) {
         if (!start || !end || start.length !== end.length)
             return;
 
@@ -102,10 +102,8 @@ namespace color {
         activeTransition = new PaletteTransition(start, end, duration);
     }
 
-    export function pauseUntilTransitionComplete() {
-        if (activeTransition) {
-            pauseUntil(() => !activeTransition);
-        }
+    export function pauseUntilDone() {
+        pauseUntil(() => !activeTransition);
     }
 
 } 
