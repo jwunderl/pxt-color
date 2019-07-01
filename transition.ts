@@ -1,5 +1,5 @@
 namespace color {
-    export class PaletteTransition {
+    export class Fade {
         protected startTime: number;
         protected startPalette: Palette;
         protected endPalette: Palette;
@@ -11,7 +11,7 @@ namespace color {
             return this.startTime !== undefined;
         }
 
-        public start(duration = 1000): PaletteTransition {
+        public start(duration = 1000): Fade {
             init();
             this.duration = duration;
             if (!this.startPalette)
@@ -19,21 +19,21 @@ namespace color {
 
             color.setUserColors(this.startPalette);
             this.startTime = game.runtime();
-            activeTransition = this;
+            activeFade = this;
             return this;
         }
 
-        public stop(): PaletteTransition {
+        public stop(): Fade {
             this.startPalette = undefined;
             return this;
         }
 
-        public setStartPalette(colors: Palette): PaletteTransition {
+        public setStartPalette(colors: Palette): Fade {
             this.startPalette = colors.clone();
             return this;
         }
 
-        public setStartColor(index: number, col: Color): PaletteTransition {
+        public setStartColor(index: number, col: Color): Fade {
             if (!this.startPalette) {
                 this.startPalette = currentPalette();
             }
@@ -42,12 +42,12 @@ namespace color {
             return this;
         }
 
-        public setEndPalette(colors: Palette): PaletteTransition {
+        public setEndPalette(colors: Palette): Fade {
             this.endPalette = colors.clone();
             return this;
         }
 
-        public setEndColor(index: number, col: Color): PaletteTransition {
+        public setEndColor(index: number, col: Color): Fade {
             if (!this.endPalette) {
                 this.endPalette = currentPalette();
             }
@@ -84,17 +84,17 @@ namespace color {
             }
         }
 
-        public pause(duration: number): PaletteTransition {
+        public pause(duration: number): Fade {
             pause(duration);
             return this;
         }
 
-        public pauseUntilDone(): PaletteTransition {
+        public pauseUntilDone(): Fade {
             pauseUntil(() => this.startTime === undefined);
             return this;
         }
 
-        public reverse(): PaletteTransition {
+        public reverse(): Fade {
             const t = this.startPalette;
 
             this.startPalette = this.endPalette;
@@ -103,14 +103,14 @@ namespace color {
             return this;
         }
 
-        public clone(): PaletteTransition {
-            const transition = new PaletteTransition();
-            transition.startPalette = this.startPalette.clone();
-            transition.endPalette = this.endPalette.clone();
-            return transition;
+        public clone(): Fade {
+            const fade = new Fade();
+            fade.startPalette = this.startPalette.clone();
+            fade.endPalette = this.endPalette.clone();
+            return fade;
         }
 
-        public mapEndRGB(h: (rgb: RGB) => RGB): PaletteTransition {
+        public mapEndRGB(h: (rgb: RGB) => RGB): Fade {
             const p = this.endPalette.clone();
 
             for (let i = 0; i < p.length; ++i) {
@@ -126,30 +126,30 @@ namespace color {
         }
     }
 
-    class TransitionState {
+    class FadeState {
         constructor(
-            public state: PaletteTransition,
+            public state: Fade,
             public scene: scene.Scene
         ) { }
     }
 
-    let activeTransition: PaletteTransition;
+    let activeFade: Fade;
     let currentScene: scene.Scene;
 
-    let transitionStack: TransitionState[];
+    let FadeStack: FadeState[];
 
     game.addScenePushHandler(() => {
         if (currentScene) {
-            if (!transitionStack) transitionStack = [];
+            if (!FadeStack) FadeStack = [];
 
-            transitionStack.push(
-                new TransitionState(
-                    activeTransition,
+            FadeStack.push(
+                new FadeState(
+                    activeFade,
                     currentScene
                 )
             );
 
-            activeTransition = undefined;
+            activeFade = undefined;
             currentScene = undefined;
         }
     });
@@ -157,15 +157,15 @@ namespace color {
     game.addScenePopHandler(() => {
         const scene = game.currentScene();
         currentScene = undefined;
-        activeTransition = undefined;
+        activeFade = undefined;
 
-        if (transitionStack && transitionStack.length) {
-            const nextState = transitionStack.pop();
+        if (FadeStack && FadeStack.length) {
+            const nextState = FadeStack.pop();
             if (nextState.scene === scene) {
-                activeTransition = nextState.state;
+                activeFade = nextState.state;
                 currentScene = nextState.scene;
             } else {
-                transitionStack.push(nextState);
+                FadeStack.push(nextState);
             }
         }
     });
@@ -174,10 +174,10 @@ namespace color {
     function init() {
         if (!currentScene) {
             game.forever(() => {
-                if (activeTransition && activeTransition.isActive()) {
-                    const finished = activeTransition.step();
+                if (activeFade && activeFade.isActive()) {
+                    const finished = activeFade.step();
                     if (finished) {
-                        activeTransition = undefined;
+                        activeFade = undefined;
                     }
                 }
             });
@@ -186,26 +186,26 @@ namespace color {
     }
 
     /**
-     *  Create a transition from start to end that occurs over the given duration
+     *  Create a Fade from start to end that occurs over the given duration
      */
-    export function startTransition(start: Palette, end: Palette, duration = 2000) {
+    export function startFade(start: Palette, end: Palette, duration = 2000) {
         if (!start || !end || start.length !== end.length)
             return;
 
-        activeTransition = new PaletteTransition();
-        activeTransition.setStartPalette(start);
-        activeTransition.setEndPalette(end);
-        activeTransition.start(duration)
+        activeFade = new Fade();
+        activeFade.setStartPalette(start);
+        activeFade.setEndPalette(end);
+        activeFade.start(duration)
     }
 
-    export function startTransitionUntilDone(start: Palette, end: Palette, duration?: number) {
-        startTransition(start, end, duration);
-        pauseUntilTransitionDone();
+    export function startFadeUntilDone(start: Palette, end: Palette, duration?: number) {
+        startFade(start, end, duration);
+        pauseUntilFadeDone();
     }
 
-    export function pauseUntilTransitionDone() {
-        if (activeTransition) {
-            activeTransition.pauseUntilDone();
+    export function pauseUntilFadeDone() {
+        if (activeFade) {
+            activeFade.pauseUntilDone();
         }
     }
 } 
