@@ -122,4 +122,8 @@ scene.setBackgroundImage(img`
 `);
 
 pause(500);
-color.startPaletteTransition(color.Arcade, color.AdaFruit, 5000);
+// color.setUserColors(color.Arcade)
+// color.setUserColors(color.AdaFruit);
+color.startPaletteTransition(color.Arcade, color.AdaFruit, 1000);
+color.pauseUntilTransitionComplete();
+color.startPaletteTransition(color.AdaFruit, color.Matte, 1000);

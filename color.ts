@@ -86,11 +86,12 @@ namespace color {
 
         const fromStart = paletteOffset * 3;
         const toStart = start * 3;
+        const asBuf = palette.buffer();
 
         const copyLength = 3 * Math.clamp(0, availableColors(), length);
 
         for (let i = 0; i < copyLength; i++) {
-            currentColors[toStart + i] = palette.color(fromStart + i);
+            currentColors[toStart + i] = asBuf[fromStart + i];
         }
 
         image.setPalette(currentColors);
