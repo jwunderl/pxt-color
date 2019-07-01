@@ -6,10 +6,23 @@ namespace color {
     /**
      * A color in RGB format
      */
-    export interface RGB {
-        r: number;
-        b: number;
-        g: number;
+    export class RGB {
+        constructor(
+            public r: number,
+            public b: number,
+            public g: number
+        ) { }
+    }
+
+    /**
+     * A color in HSL format
+     */
+    export class HSL {
+        constructor(
+            public hue: number,
+            public saturation: number,
+            public luminosity: number
+        ) { }
     }
 
     /**
@@ -111,8 +124,15 @@ namespace color {
     /**
      * Converts an array of RGB colors into a palette buffer
      */
-    export function rgbToPalette(colors: RGB[]): Palette {
+    export function rgbArrayToPalette(colors: RGB[]): Palette {
         return hexArrayToPalette(colors && colors.map(rgbToNumber));
+    }
+
+    /**
+     * Converts an array of HSL colors into a palette buffer
+     */
+    export function hslArrayToPalette(colors: HSL[]): Palette {
+        return hexArrayToPalette(colors && colors.map(hslToNumber));
     }
 
     export function bufferToPalette(buf: Buffer): Palette {
@@ -192,10 +212,59 @@ namespace color {
     }
 
     /**
-     * Converts an RGB to a hex number (rgb format)
+     * Converts an RGB to a hex number
      */
     export function rgbToNumber(rgb: RGB): Color {
         return toColor(rgb.r, rgb.g, rgb.b);
+    }
+
+    /**
+     * Converts an HSL to a hex number
+     * 
+     * based off https://stackoverflow.com/questions/2353211/hsl-to-rgb-color-conversion
+     */
+    export function hslToNumber(hsl: HSL): number {
+        let r0 = hsl.luminosity;
+        let g0 = hsl.luminosity;
+        let b0 = hsl.luminosity;
+
+        if (hsl.saturation !== 0) {
+            const toRGB = (p: number, q: number, t: number) => {
+                if (t < 0) {
+                    t += 1;
+                } else if (t > 1) {
+                    t -= 1;
+                }
+
+                if (t < 1 / 6) {
+                    return p + (q - p) * 6 * t;
+                } else if (t < 1 / 2) {
+                    return q;
+                } else if (t < 2 / 3) {
+                    return p + (q - p) * (2 / 3 - t) * 6;
+                } else {
+                    return p;
+                }
+            }
+
+            const q = hsl.luminosity < 0.5 ?
+                hsl.luminosity * (1 + hsl.saturation)
+                :
+                hsl.luminosity + hsl.saturation - hsl.luminosity * hsl.saturation;
+            const p = 2 * hsl.luminosity - q;
+
+            r0 = toRGB(p, q, hsl.hue + 1 / 3);
+            g0 = toRGB(p, q, hsl.hue);
+            b0 = toRGB(p, q, hsl.hue - 1 / 3);
+        }
+
+        return rgbToNumber(
+            new RGB(
+                Math.round(r0 * 255),
+                Math.round(g0 * 255),
+                Math.round(b0 * 255)
+            )
+        );
     }
 
     // return components of color
