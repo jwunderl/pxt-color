@@ -62,31 +62,31 @@ namespace color {
         }
 
         public step(): boolean {
-            if (!this.endPalette || !this.isActive()) {
+            if (!this.endPalette) {
+                return true;
+            }
+
+            if (!this.isActive()) {
+                color.setUserColors(this.endPalette);
+                this.startTime = undefined;
                 return true;
             }
 
             const time = game.runtime() - this.startTime;
 
-            if (time < this.duration) {
-                const p = new Palette(this.startPalette.length);
+            const p = new Palette(this.startPalette.length);
 
-                for (let i = 0; i < p.length; ++i) {
-                    const col = color.partialColorTransition(
-                        this.startPalette.color(i),
-                        this.endPalette.color(i),
-                        time / this.duration
-                    );
-                    p.setColor(i, col);
-                }
-
-                color.setUserColors(p);
-                return false;
-            } else {
-                color.setUserColors(this.endPalette);
-                this.startTime = undefined;
-                return true;
+            for (let i = 0; i < p.length; ++i) {
+                const col = color.partialColorTransition(
+                    this.startPalette.color(i),
+                    this.endPalette.color(i),
+                    time / this.duration
+                );
+                p.setColor(i, col);
             }
+
+            color.setUserColors(p);
+            return false;
         }
 
         public pause(duration: number): Fade {
