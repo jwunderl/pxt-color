@@ -271,9 +271,13 @@ namespace color {
     }
 
     export function currentPalette() {
-        const p = new Palette(availableColors());
-        p.loadBuffer(currentColors);
-        return p;
+        if (currentColors) {
+            const p = new Palette(availableColors());
+            p.loadBuffer(currentColors);
+            return p;
+        } else {
+            return defaultPalette.clone();
+        }
     }
 
     // return components of color
