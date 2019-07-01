@@ -133,3 +133,6 @@ const grayArcade = color.Arcade.clone();
 grayArcade.setColor(0xF, 0x737373);
 
 color.startTransition(grayArcade, color.Arcade, 1000)
+
+const p = color.gradient(0xFFFFFF, 0x000000, 15);
+console.log(p + "")

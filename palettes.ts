@@ -64,4 +64,24 @@ namespace color {
         0xFF77A8,
         0xFFCCAA
     ]);
+
+    //% whenUsed
+    export const GrayScale = hexArrayToPalette([
+        0x000000,
+        0xFFFFFF,
+        0xEDEDED,
+        0xDBDBDB,
+        0xC8C8C8,
+        0xB6B6B6,
+        0xA4A4A4,
+        0x929292,
+        0x808080,
+        0x6D6D6D,
+        0x5B5B5B,
+        0x494949,
+        0x373737,
+        0x242424,
+        0x121212,
+        0x000000
+    ]);
 } 

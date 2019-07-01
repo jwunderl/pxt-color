@@ -180,16 +180,12 @@ namespace color {
         grad.setColor(0, start);
         grad.setColor(steps - 1, end);
 
-        for (let i = 1; i < steps - 1; i++) {
-            const col = partialColorTransition(start, end, i / steps);
+        for (let i = 0; i < steps; i++) {
+            const col = partialColorTransition(start, end, i / (steps - 1));
             grad.setColor(i, col);
         }
 
         return grad;
-    }
-
-    function colorSlope(a: Color, b: Color, steps: number) {
-        return (a - b) / steps;
     }
 
     /**
