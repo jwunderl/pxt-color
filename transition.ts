@@ -4,28 +4,23 @@ namespace color {
         public start: Palette;
         public end: Palette;
         public duration: number;
-        protected active: boolean;
 
-        constructor(duration = 1000) {
-            this.duration = duration;
-            this.active = false;
-        }
+        constructor() { }
 
         public isActive() {
-            return this.active;
+            return this.startTime !== undefined;
         }
 
-        public activate() {
-            this.active = true;
-            if (!this.start) {
+        public activate(duration = 1000) {
+            init();
+            if (!this.start)
                 this.start = currentPalette();
-            }
-            this.startTime = game.runtime();
+
             color.setUserColors(this.start);
+            this.startTime = game.runtime();
         }
 
         public stop() {
-            this.active = false;
             this.start = undefined;
         }
 
@@ -58,7 +53,7 @@ namespace color {
         }
 
         public step(): boolean {
-            if (!this.end || !this.active) {
+            if (!this.end || !this.isActive()) {
                 return true;
             }
 
@@ -80,8 +75,13 @@ namespace color {
                 return false;
             } else {
                 color.setUserColors(this.end);
+                this.startTime = undefined;
                 return true;
             }
+        }
+
+        public pauseUntilDone() {
+            pauseUntil(() => this.startTime === undefined);
         }
     }
 
@@ -144,18 +144,19 @@ namespace color {
         }
     }
 
-    export function startTransition(start: Palette, end: Palette, duration: number) {
+    export function startTransition(start: Palette, end: Palette, duration = 2000) {
         if (!start || !end || start.length !== end.length)
             return;
 
-        init();
-        activeTransition = new PaletteTransition(duration);
+        activeTransition = new PaletteTransition();
         activeTransition.setStartPalette(start);
         activeTransition.setEndPalette(end);
-        activeTransition.activate()
+        activeTransition.activate(duration)
     }
 
-    export function pauseUntilDone() {
-        pauseUntil(() => !activeTransition);
+    export function pauseUntilTransitionDone() {
+        if (activeTransition) {
+            activeTransition.pauseUntilDone();
+        }
     }
 } 
