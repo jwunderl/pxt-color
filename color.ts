@@ -81,6 +81,12 @@ namespace color {
         toString(): string {
             return this.toHexArray().join(",");
         }
+
+        clone(): Palette {
+            const p = new Palette();
+            p.loadBuffer(this.buffer());
+            return p;
+        }
     }
 
     /**
