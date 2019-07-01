@@ -115,19 +115,46 @@ namespace color {
             return fade;
         }
 
-        public mapEndRGB(h: (rgb: RGB) => RGB): Fade {
-            const p = this.endPalette.clone();
+        public mapEndRGB(h: (rgb: RGB, index: number, palette: Palette) => RGB): Fade {
+            const out = this.clone();
+
+            out.setEndPalette(
+                this.mapPaletteRGB(
+                    this.endPalette,
+                    h
+                )
+            );
+
+            return out;
+        }
+
+        public mapStartRGB(h: (rgb: RGB, index: number, palette: Palette) => RGB): Fade {
+            const out = this.clone();
+
+            out.setStartPalette(
+                this.mapPaletteRGB(
+                    this.startPalette,
+                    h
+                )
+            );
+
+            return out;
+        }
+
+        protected mapPaletteRGB(
+            orig: Palette,
+            h: (rgb: RGB, index: number, palette: Palette) => RGB
+        ): Palette {
+            const p = orig.clone();
 
             for (let i = 0; i < p.length; ++i) {
                 const initRGB = RGB.fromHexValue(p.color(i));
-                const applied = h(initRGB);
+                const applied = h(initRGB, i, p);
                 p.setColor(i, applied.hexValue());
             }
 
-            const out = this.clone();
-            out.setEndPalette(p);
+            return p;
 
-            return out;
         }
     }
 

@@ -125,17 +125,17 @@ scene.setBackgroundColor(0xF);
 // pause(500);
 // color.setUserColors(color.Arcade)
 // color.setUserColors(color.Adafruit);
-// color.startFadeUntilDone(color.Arcade, color.Adafruit, 2000);
-// color.startFadeUntilDone(color.Adafruit, color.Matte, 2000);
+color.startFadeUntilDone(color.Arcade, color.Adafruit, 2000);
+color.startFadeUntilDone(color.Adafruit, color.Matte, 2000);
 
-// const grayArcade = color.Arcade.clone();
-// grayArcade.setColor(0xF, 0x737373);
+const grayArcade = color.Arcade.clone();
+grayArcade.setColor(0xF, 0x737373);
 
-// color.startFadeUntilDone(grayArcade, color.Arcade, 1000)
+color.startFadeUntilDone(grayArcade, color.Arcade, 1000)
 
-// // fade to black
-// color.startFadeUntilDone(color.Arcade, color.Black, 5000);
-// color.startFadeUntilDone(color.currentPalette(), color.GrayScale, 2000);
+// fade to black
+color.startFadeUntilDone(color.Arcade, color.Black, 5000);
+color.startFadeUntilDone(color.currentPalette(), color.GrayScale, 2000);
 
 new color.Fade()
     .setEndColor(0x1, 0xFF0000)
@@ -164,4 +164,4 @@ new color.Fade()
     })
     .start(1000);
 
-// color.startFadeUntilDone(color.currentPalette(), color.White, 2000);
+color.startFadeUntilDone(color.currentPalette(), color.White, 2000);
