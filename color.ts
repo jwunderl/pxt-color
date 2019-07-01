@@ -117,6 +117,7 @@ namespace color {
     }
 
     export function resetColorsToDefault() {
+        currentColors = undefined;
         setUserColors(defaultPalette);
     }
 

@@ -121,9 +121,14 @@ scene.setBackgroundImage(img`
     . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
 `);
 
-pause(500);
+// pause(500);
 // color.setUserColors(color.Arcade)
 // color.setUserColors(color.AdaFruit);
 color.transition.start(color.Arcade, color.AdaFruit, 2000);
-color.transition.pauseUntilDone();
-color.transition.start(color.AdaFruit, color.Matte, 2000);
+// color.transition.pauseUntilDone();
+// color.transition.start(color.AdaFruit, color.Matte, 2000);
+
+const grayArcade = color.Arcade.clone();
+grayArcade.setColor(0xF, 0x737373);
+
+color.transition.start(color.Arcade, grayArcade, 2000)
