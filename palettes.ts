@@ -89,5 +89,5 @@ namespace color {
     export const Black = color.gradient(0x000000, 0x000000, 16);
 
     //% whenUsed
-    export const White = color.gradient(0xFFFFFF, 0xFFFFFF, 16)
+    export const White = color.gradient(0xFFFFFF, 0xFFFFFF, 16);
 } 

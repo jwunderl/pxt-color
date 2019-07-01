@@ -84,6 +84,11 @@ namespace color {
             }
         }
 
+        public pause(duration: number): PaletteTransition {
+            pause(duration);
+            return this;
+        }
+
         public pauseUntilDone(): PaletteTransition {
             pauseUntil(() => this.startTime === undefined);
             return this;

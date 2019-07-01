@@ -1,7 +1,8 @@
 namespace color {
+    let currentColors: Buffer;
+
     // A color in hex format, between 0x000000 and 0xFFFFFF
     export type Color = number;
-    let currentColors: Buffer;
 
     /**
      * A color in RGB format
@@ -117,7 +118,6 @@ namespace color {
     }
 
     export function resetColorsToDefault() {
-        currentColors = undefined;
         setUserColors(defaultPalette);
     }
 
@@ -196,8 +196,11 @@ namespace color {
      * @param the percentage between 0 and 1
      */
     export function partialColorTransition(start: Color, end: Color, percentage: number) {
-        if (percentage <= 0) return start;
-        else if (percentage >= 1) return end;
+        if (percentage <= 0) {
+            return start;
+        } else if (percentage >= 1) {
+            return end;
+        }
 
         const r1 = red(start);
         const g1 = green(start);
