@@ -8,11 +8,36 @@ namespace color {
      * A color in RGB format
      */
     export class RGB {
-        constructor(
-            public red: number,
-            public green: number,
-            public blue: number
-        ) { }
+        protected _r: number;
+        protected _g: number;
+        protected _b: number;
+
+        constructor(red: number, green: number, blue: number) {
+            this.red = red;
+            this.green = green;
+            this.blue = blue;
+        }
+
+        get red(): number {
+            return this._r;
+        }
+        set red(v: number) {
+            this._r = Math.clamp(0, 255, v);
+        }
+
+        get green(): number {
+            return this._g;
+        }
+        set green(v: number) {
+            this._g = Math.clamp(0, 255, v);
+        }
+
+        get blue(): number {
+            return this._b;
+        }
+        set blue(v: number) {
+            this._b = Math.clamp(0, 255, v);
+        }
 
         hexValue(): Color {
             return toColor(
