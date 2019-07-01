@@ -125,25 +125,19 @@ scene.setBackgroundColor(0xF);
 // pause(500);
 // color.setUserColors(color.Arcade)
 // color.setUserColors(color.Adafruit);
-color.startTransition(color.Arcade, color.Adafruit, 2000);
-color.pauseUntilTransitionDone();
-color.startTransition(color.Adafruit, color.Matte, 2000);
-color.pauseUntilTransitionDone();
+// color.startTransitionUntilDone(color.Arcade, color.Adafruit, 2000);
+// color.startTransitionUntilDone(color.Adafruit, color.Matte, 2000);
 
-const grayArcade = color.Arcade.clone();
-grayArcade.setColor(0xF, 0x737373);
+// const grayArcade = color.Arcade.clone();
+// grayArcade.setColor(0xF, 0x737373);
 
-color.startTransition(grayArcade, color.Arcade, 1000)
-color.pauseUntilTransitionDone();
+// color.startTransitionUntilDone(grayArcade, color.Arcade, 1000)
 
 // fade to black
-const black = color.gradient(0x000000, 0x000000, 16);
-color.startTransition(color.Arcade, black, 5000);
-color.pauseUntilTransitionDone();
-color.startTransition(color.currentPalette(), color.Adafruit, 2000);
-color.pauseUntilTransitionDone();
+// color.startTransitionUntilDone(color.Arcade, color.Black, 5000);
+// color.startTransitionUntilDone(color.currentPalette(), color.GrayScale, 2000);
 
-const myTransition = new color.PaletteTransition()
+new color.PaletteTransition()
     .setEndColor(0x1, 0xFF0000)
     .setEndColor(0x2, 0x00FF00)
     .setEndColor(0x3, 0x0000FF)
@@ -155,6 +149,10 @@ const myTransition = new color.PaletteTransition()
     .setEndColor(0xC, 0x678987)
     .setEndColor(0xD, 0x123456)
     .setEndColor(0xF, 0xFFFFFF)
-    .start(3000);
+    .start(3000)
+    .pauseUntilDone()
+    .reverse()
+    .start(3000)
+    .pauseUntilDone();
 
-
+// color.startTransitionUntilDone(color.currentPalette(), color.White, 2000);
