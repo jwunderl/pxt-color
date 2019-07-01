@@ -84,8 +84,18 @@ namespace color {
             }
         }
 
-        public pauseUntilDone() {
+        public pauseUntilDone(): PaletteTransition {
             pauseUntil(() => this.startTime === undefined);
+            return this;
+        }
+
+        public reverse(): PaletteTransition {
+            const t = this.startPalette;
+
+            this.startPalette = this.endPalette;
+            this.endPalette = t;
+
+            return this;
         }
     }
 
@@ -148,6 +158,9 @@ namespace color {
         }
     }
 
+    /**
+     *  Create a transition from start to end that occurs over the given duration
+     */
     export function startTransition(start: Palette, end: Palette, duration = 2000) {
         if (!start || !end || start.length !== end.length)
             return;
@@ -156,6 +169,11 @@ namespace color {
         activeTransition.setStartPalette(start);
         activeTransition.setEndPalette(end);
         activeTransition.start(duration)
+    }
+
+    export function startTransitionUntilDone(start: Palette, end: Palette, duration?: number) {
+        startTransition(start, end, duration);
+        pauseUntilTransitionDone();
     }
 
     export function pauseUntilTransitionDone() {
