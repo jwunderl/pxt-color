@@ -105,5 +105,4 @@ namespace color.transition {
     export function pauseUntilDone() {
         pauseUntil(() => !activeTransition);
     }
-
 } 

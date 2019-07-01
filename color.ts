@@ -8,9 +8,9 @@ namespace color {
      */
     export class RGB {
         constructor(
-            public r: number,
-            public b: number,
-            public g: number
+            public red: number,
+            public green: number,
+            public blue: number
         ) { }
     }
 
@@ -43,9 +43,9 @@ namespace color {
             if (index < 0 || index >= this.length) return;
 
             const start = index * 3;
-            this.buf[start] = r(color);
-            this.buf[start + 1] = g(color);
-            this.buf[start + 2] = b(color);
+            this.buf[start] = red(color);
+            this.buf[start + 1] = green(color);
+            this.buf[start + 2] = blue(color);
         }
 
         color(index: number): Color {
@@ -202,13 +202,13 @@ namespace color {
         if (percentage <= 0) return start;
         else if (percentage >= 1) return end;
 
-        const r1 = r(start);
-        const g1 = g(start);
-        const b1 = b(start);
+        const r1 = red(start);
+        const g1 = green(start);
+        const b1 = blue(start);
 
-        const rDiff = r(end) - r1;
-        const gDiff = g(end) - g1;
-        const bDiff = b(end) - b1;
+        const rDiff = red(end) - r1;
+        const gDiff = green(end) - g1;
+        const bDiff = blue(end) - b1;
 
         return toColor(
             r1 + Math.round(rDiff * percentage),
@@ -221,7 +221,7 @@ namespace color {
      * Converts an RGB to a hex number
      */
     export function rgbToNumber(rgb: RGB): Color {
-        return toColor(rgb.r, rgb.g, rgb.b);
+        return toColor(rgb.red, rgb.green, rgb.blue);
     }
 
     /**
@@ -274,15 +274,15 @@ namespace color {
     }
 
     // return components of color
-    function r(color: number): Color {
+    function red(color: number): Color {
         return (color >> 16) & 0xff;
     }
 
-    function g(color: number): Color {
+    function green(color: number): Color {
         return (color >> 8) & 0xff;
     }
 
-    function b(color: number): Color {
+    function blue(color: number): Color {
         return color & 0xff;
     }
 
