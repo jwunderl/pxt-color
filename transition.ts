@@ -102,6 +102,28 @@ namespace color {
 
             return this;
         }
+
+        public clone(): PaletteTransition {
+            const transition = new PaletteTransition();
+            transition.startPalette = this.startPalette.clone();
+            transition.endPalette = this.endPalette.clone();
+            return transition;
+        }
+
+        public mapEndRGB(h: (rgb: RGB) => RGB): PaletteTransition {
+            const p = this.endPalette.clone();
+
+            for (let i = 0; i < p.length; ++i) {
+                const initRGB = RGB.fromHexValue(p.color(i));
+                const applied = h(initRGB);
+                p.setColor(i, applied.hexValue());
+            }
+
+            const out = this.clone();
+            out.setEndPalette(p);
+
+            return out;
+        }
     }
 
     class TransitionState {

@@ -13,6 +13,22 @@ namespace color {
             public green: number,
             public blue: number
         ) { }
+
+        hexValue(): Color {
+            return toColor(
+                this.red,
+                this.green,
+                this.blue
+            );
+        }
+
+        static fromHexValue(col: Color): RGB {
+            return new RGB(
+                red(col),
+                green(col),
+                blue(col)
+            );
+        }
     }
 
     /**
@@ -24,6 +40,10 @@ namespace color {
             public saturation: number,
             public luminosity: number
         ) { }
+
+        hexValue(): Color {
+            return hslToNumber(this);
+        }
     }
 
     /**
@@ -42,6 +62,7 @@ namespace color {
 
         setColor(index: number, color: Color) {
             if (index < 0 || index >= this.length) return;
+            if (color < 0 || color >= 0xFFFFFF) return;
 
             const start = index * 3;
             this.buf[start] = red(color);
