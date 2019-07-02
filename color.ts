@@ -212,23 +212,25 @@ namespace color {
 
     /**
      * Creates a palette from a gradient between two colors.
+     * The final length of the palette will be steps + offset
      *
      * @param start The start color
      * @param end The end color
-     * @param steps The number of colors to generate;
+     * @param steps The number of colors to generate
+     * @param offset The index to start filling in colors from
      */
-    export function gradient(start: Color, end: Color, steps = 0xF): Palette {
+    export function gradient(start: Color, end: Color, steps = 0xF, offset = 0): Palette {
         if (steps < 2)
             return undefined;
 
-        const grad = new Palette(steps);
+        const grad = new Palette(steps + offset);
 
         grad.setColor(0, start);
         grad.setColor(steps - 1, end);
 
         for (let i = 0; i < steps; i++) {
             const col = partialColorTransition(start, end, i / (steps - 1));
-            grad.setColor(i, col);
+            grad.setColor(i + offset, col);
         }
 
         return grad;
