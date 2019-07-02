@@ -8,7 +8,7 @@
     "files": [
         "README.md",
         "color.ts",
-        "transition.ts",
+        "fade.ts",
         "palettes.ts"
     ],
     "testFiles": [
