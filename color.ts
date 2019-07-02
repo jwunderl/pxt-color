@@ -82,7 +82,7 @@ namespace color {
             return this.s;
         }
         set saturation(v: number) {
-            this.s = Math.clamp(0, 1, v); 
+            this.s = Math.clamp(0, 1, v);
         }
 
         get luminosity(): number {
@@ -172,7 +172,7 @@ namespace color {
      */
     export function setUserColors(palette: Palette, start = 0, length = 0, paletteOffset = 0) {
         if (!currentColors)
-            currentColors = defaultPalette.buffer();
+            currentColors = originalPalette.buffer();
         if (!length || length > palette.length)
             length = palette.length;
 
@@ -190,14 +190,14 @@ namespace color {
     }
 
     export function resetColorsToDefault() {
-        setUserColors(defaultPalette);
+        setUserColors(originalPalette);
     }
 
     /**
      * Returns the number of colors available in the palette
      */
     export function availableColors(): number {
-        return defaultPalette.length;
+        return originalPalette.length;
     }
 
     /**
@@ -353,7 +353,7 @@ namespace color {
             p.loadBuffer(currentColors);
             return p;
         } else {
-            return defaultPalette.clone();
+            return originalPalette.clone();
         }
     }
 
