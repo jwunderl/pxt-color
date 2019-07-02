@@ -60,11 +60,37 @@ namespace color {
      * A color in HSL format
      */
     export class HSL {
-        constructor(
-            public hue: number,
-            public saturation: number,
-            public luminosity: number
-        ) { }
+        protected h: number;
+        protected s: number;
+        protected l: number;
+
+        constructor(hue: number, saturation: number, luminosity: number) {
+            this.hue = hue;
+            this.saturation = saturation;
+            this.luminosity = luminosity;
+        }
+
+        get hue(): number {
+            return this.h;
+        }
+        set hue(v: number) {
+            const h = v % 360;
+            this.h = h < 0 ? 360 - h : h;
+        }
+
+        get saturation(): number {
+            return this.s;
+        }
+        set saturation(v: number) {
+            this.s = Math.clamp(0, 1, v); 
+        }
+
+        get luminosity(): number {
+            return this.l;
+        }
+        set luminosity(v: number) {
+            this.l = Math.clamp(0, 1, v);
+        }
 
         hexValue(): Color {
             return hslToNumber(this);
