@@ -130,7 +130,7 @@ namespace color {
                 h /= 6;
             }
 
-            return new HSL(h, s, l);
+            return new HSL(h * 360, s, l);
         }
     }
 
@@ -344,6 +344,7 @@ namespace color {
         let r0 = hsl.luminosity;
         let g0 = hsl.luminosity;
         let b0 = hsl.luminosity;
+        const hue = hsl.hue / 360;
 
         if (hsl.saturation !== 0) {
             const toRGB = (p: number, q: number, t: number) => {
@@ -364,15 +365,14 @@ namespace color {
                 }
             }
 
-            const q = hsl.luminosity < 0.5 ?
-                hsl.luminosity * (1 + hsl.saturation)
-                :
-                hsl.luminosity + hsl.saturation - hsl.luminosity * hsl.saturation;
+            const q = hsl.luminosity < 0.5
+                ? hsl.luminosity * (1 + hsl.saturation)
+                : hsl.luminosity + hsl.saturation - hsl.luminosity * hsl.saturation;
             const p = 2 * hsl.luminosity - q;
 
-            r0 = toRGB(p, q, hsl.hue + 1 / 3);
-            g0 = toRGB(p, q, hsl.hue);
-            b0 = toRGB(p, q, hsl.hue - 1 / 3);
+            r0 = toRGB(p, q, hue + 1 / 3);
+            g0 = toRGB(p, q, hue);
+            b0 = toRGB(p, q, hue - 1 / 3);
         }
 
         return rgbToNumber(
