@@ -220,6 +220,13 @@ namespace color {
     /**
      *  Create a Fade from start to end that occurs over the given duration
      */
+    //% blockId=colorStartFade block="fade from %start to %end|over %duration ms"
+    //% weight=80
+    //% start.fieldEditor="imagedropdown"
+    //% start.fieldOptions.columns=4
+    //% end.fieldEditor="imagedropdown"
+    //% end.fieldOptions.columns=4
+    //% duration.fieldEditor=timePicker
     export function startFade(start: Palette, end: Palette, duration = 2000) {
         if (!start || !end || start.length !== end.length)
             return;
@@ -235,6 +242,11 @@ namespace color {
         pauseUntilFadeDone();
     }
 
+    /**
+     * Pause until the current fade is completed
+     */
+    //% blockId=colorPauseUntilFadeDone block="pause until current fade done"
+    //% weight=50
     export function pauseUntilFadeDone() {
         if (activeFade) {
             activeFade.pauseUntilDone();
