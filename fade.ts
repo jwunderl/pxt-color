@@ -224,7 +224,7 @@ namespace color {
     /**
      *  Create a Fade from start to end that occurs over the given duration
      */
-    //% blockId=colorStartFade block="fade from %start to %end|over %duration ms"
+    //% blockId=colorStartFade block="fade from %start to %end||over %duration ms"
     //% weight=80
     //% start.fieldEditor="imagedropdown"
     //% start.fieldOptions.columns=4
