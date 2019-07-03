@@ -1,0 +1,30 @@
+{
+  "*": {
+    "namespace": "color",
+    "dataEncoding": "base64"
+  },
+  "adafruit": {
+  },
+  "adventure": {
+  },
+  "arcade": {
+  },
+  "black": {
+  },
+  "diy": {
+  },
+  "grayscale": {
+  },
+  "matte": {
+  },
+  "original": {
+  },
+  "poke": {
+  },
+  "steampunk": {
+  },
+  "stilllife": {
+  },
+  "white": {
+  }
+}
