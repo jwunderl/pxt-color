@@ -217,8 +217,7 @@ namespace color {
         //% blockId=effectStartScreenFade
         //% block="apply fade effect %effect||over %duration ms"
         //% duration.shadow=timePicker
-        //% blockNamespace=scene
-        //% weight=90 help=effects/start-screen-effect
+        //% weight=60 help=effects/start-screen-effect
         startScreenEffect(duration = 2000) {
             lastEffect.stop();
             lastEffect = this;
