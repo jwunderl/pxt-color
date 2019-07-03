@@ -17,7 +17,7 @@ namespace color {
             if (!this.startPalette)
                 this.startPalette = currentPalette();
 
-            color.setUserColors(this.startPalette);
+            color.setPalette(this.startPalette);
             this.startTime = game.runtime();
             activeFade = this;
             return this;
@@ -67,7 +67,7 @@ namespace color {
             }
 
             if (!this.isActive()) {
-                color.setUserColors(this.endPalette);
+                color.setPalette(this.endPalette);
                 this.startTime = undefined;
                 return true;
             }
@@ -85,7 +85,7 @@ namespace color {
                 p.setColor(i, col);
             }
 
-            color.setUserColors(p);
+            color.setPalette(p);
             return false;
         }
 

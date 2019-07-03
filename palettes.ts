@@ -5,10 +5,10 @@ namespace color {
      * This **must** be defined first in this file because others palettes
      * may be defined relative to this palette
      */
-    //% whenUsed block="original"
+    //% fixedInstance whenUsed block="original"
     export const originalPalette = bufferToPalette(hex`__palette`);
 
-    //% whenUsed block="Adafruit"
+    //% fixedInstance whenUsed block="Adafruit"
     export const Adafruit = hexArrayToPalette([
         0x000000,
         0x17ABFF,
@@ -28,7 +28,7 @@ namespace color {
         0x000000
     ]);
 
-    //% whenUsed block="Matte"
+    //% fixedInstance whenUsed block="Matte"
     export const Matte = hexArrayToPalette([
         0x000000,
         0x1D2B53,
@@ -48,7 +48,7 @@ namespace color {
         0xFFCCAA
     ]);
 
-    //% whenUsed block="GrayScale"
+    //% fixedInstance whenUsed block="GrayScale"
     export const GrayScale = hexArrayToPalette([
         0x000000,
         0xFFFFFF,
@@ -68,14 +68,14 @@ namespace color {
         0x000000
     ]);
 
-    //% whenUsed block="Black"
+    //% fixedInstance whenUsed block="Black"
     export const Black = color.gradient(0x000000, 0x000000, 16);
 
-    //% whenUsed block="White"
+    //% fixedInstance whenUsed block="White"
     export const White = color.gradient(0xFFFFFF, 0xFFFFFF, 16);
 
     // https://lospec.com/palette-list/poke14
-    //% whenUsed block="Poke"
+    //% fixedInstance whenUsed block="Poke"
     export const Poke = hexArrayToPalette([
         0x000000,
         0xffffff,
@@ -96,7 +96,7 @@ namespace color {
     ]);
 
     // https://lospec.com/palette-list/warioware-diy
-    //% whenUsed block="DIY"
+    //% fixedInstance whenUsed block="DIY"
     export const DIY = hexArrayToPalette([
         0x000000,
         0xffffff,
@@ -117,7 +117,7 @@ namespace color {
     ]);
 
     // https://lospec.com/palette-list/still-life
-    //% whenUsed block="StillLife"
+    //% fixedInstance whenUsed block="StillLife"
     export const StillLife = hexArrayToPalette([
         0x000000,
         0x3f2811,
@@ -138,7 +138,7 @@ namespace color {
     ]);
 
     // https://lospec.com/palette-list/steam-lords, missing 0xa0b9ba
-    //% whenUsed block="SteamPunk"
+    //% fixedInstance whenUsed block="SteamPunk"
     export const SteamPunk = hexArrayToPalette([
         0x000000,
         0x213b25,
@@ -159,7 +159,7 @@ namespace color {
     ])
 
     // https://lospec.com/palette-list/sweetie-16, missing 0x73eff7
-    //% whenUsed block="Sweet"
+    //% fixedInstance whenUsed block="Sweet"
     export const Sweet = hexArrayToPalette([
         0x000000,
         0x1a1c2c,
@@ -180,7 +180,7 @@ namespace color {
     ]);
 
     // https://lospec.com/palette-list/na16, missing 0x70377f
-    //% whenUsed block="Adventure"
+    //% fixedInstance whenUsed block="Adventure"
     export const Adventure = hexArrayToPalette([
         0x000000,
         0x8c8fae,
@@ -200,7 +200,7 @@ namespace color {
         0x1f0e1c
     ]);
 
-    //% whenUsed block="Arcade"
+    //% fixedInstance whenUsed block="Arcade"
     export const Arcade = hexArrayToPalette([
         0x000000,
         0xFFFFFF,

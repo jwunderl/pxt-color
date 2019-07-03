@@ -122,8 +122,8 @@ scene.setBackgroundImage(img`
 `);
 scene.setBackgroundColor(0xF);
 
-// color.setUserColors(color.Arcade)
-// color.setUserColors(color.Adafruit);
+// color.setPalette(color.Arcade)
+// color.setPalette(color.Adafruit);
 color.startFadeUntilDone(color.Arcade, color.Adafruit, 2000);
 color.startFadeUntilDone(color.Adafruit, color.Matte, 2000);
 

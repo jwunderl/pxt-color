@@ -137,6 +137,7 @@ namespace color {
     /**
      * A collection of colors
      */
+    //% fixedInstances
     export class Palette {
         protected buf: Buffer;
 
@@ -207,7 +208,7 @@ namespace color {
      * @param length The number of colors to copy
      * @param pOffset The offset to start copying from the palette
      */
-    export function setUserColors(palette: Palette, start = 0, length = 0, paletteOffset = 0) {
+    export function setPalette(palette: Palette, start = 0, length = 0, paletteOffset = 0) {
         if (!currentColors)
             currentColors = originalPalette.buffer();
         if (!length || length > palette.length)
@@ -227,7 +228,7 @@ namespace color {
     }
 
     export function resetColorsToDefault() {
-        setUserColors(originalPalette);
+        setPalette(originalPalette);
     }
 
     /**
