@@ -8,6 +8,7 @@
     "files": [
         "README.md",
         "color.ts",
+        "color.jres",
         "fade.ts",
         "palettes.ts"
     ],
