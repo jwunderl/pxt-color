@@ -8,7 +8,9 @@ namespace color {
         constructor() { }
 
         public isActive(): boolean {
-            return this.startTime !== undefined;
+            return this.startTime !== undefined
+                && this.duration !== undefined
+                && this.startTime + this.duration > game.runtime();
         }
 
         public start(duration = 1000): Fade {
@@ -62,7 +64,7 @@ namespace color {
         }
 
         public step(): boolean {
-            if (!this.endPalette) {
+            if (!this.endPalette || this.startTime === undefined) {
                 return true;
             }
 
@@ -95,7 +97,7 @@ namespace color {
         }
 
         public pauseUntilDone(): Fade {
-            pauseUntil(() => this.startTime === undefined || game.runtime() > this.startTime + this.duration);
+            pauseUntil(() => !this.isActive());
             return this;
         }
 
