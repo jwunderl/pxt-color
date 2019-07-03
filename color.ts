@@ -209,6 +209,8 @@ namespace color {
      * @param length The number of colors to copy
      * @param pOffset The offset to start copying from the palette
      */
+    //% blockId=colorSetPalette block="set color palette to %palette"
+    //% weight=90
     export function setPalette(palette: Palette, start = 0, length = 0, paletteOffset = 0) {
         if (!currentColors)
             currentColors = originalPalette.buffer();
