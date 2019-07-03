@@ -10,7 +10,8 @@
         "color.ts",
         "color.jres",
         "fade.ts",
-        "palettes.ts"
+        "palettes.ts",
+        "effect.ts"
     ],
     "testFiles": [
         "test.ts"

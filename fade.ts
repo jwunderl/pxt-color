@@ -1,9 +1,9 @@
 namespace color {
     export class Fade {
         protected startTime: number;
-        protected startPalette: Palette;
-        protected endPalette: Palette;
         protected duration: number;
+        startPalette: Palette;
+        endPalette: Palette;
 
         constructor() { }
 
@@ -29,7 +29,7 @@ namespace color {
         }
 
         public stop(): Fade {
-            this.startPalette = undefined;
+            this.startTime = undefined;
             return this;
         }
 

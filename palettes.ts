@@ -5,10 +5,10 @@ namespace color {
      * This **must** be defined first in this file because others palettes
      * may be defined relative to this palette
      */
-    //% fixedInstance whenUsed block="Original" jres=color.original
+    //% fixedInstance whenUsed block="original" jres=color.original
     export const originalPalette = bufferToPalette(hex`__palette`);
 
-    //% fixedInstance whenUsed block="Adafruit" jres=color.adafruit
+    //% fixedInstance whenUsed block="adafruit" jres=color.adafruit
     export const Adafruit = hexArrayToPalette([
         0x000000,
         0x17ABFF,
@@ -28,7 +28,7 @@ namespace color {
         0x000000
     ]);
 
-    //% fixedInstance whenUsed block="Matte" jres=color.matte
+    //% fixedInstance whenUsed block="matte" jres=color.matte
     export const Matte = hexArrayToPalette([
         0x000000,
         0x1D2B53,
@@ -48,7 +48,7 @@ namespace color {
         0xFFCCAA
     ]);
 
-    //% fixedInstance whenUsed block="GrayScale" jres=color.grayscale
+    //% fixedInstance whenUsed block="gray scale" jres=color.grayscale
     export const GrayScale = hexArrayToPalette([
         0x000000,
         0xFFFFFF,
@@ -68,14 +68,14 @@ namespace color {
         0x000000
     ]);
 
-    //% fixedInstance whenUsed block="Black" jres=color.black
+    //% fixedInstance whenUsed block="black" jres=color.black
     export const Black = color.gradient(0x000000, 0x000000, 16);
 
-    //% fixedInstance whenUsed block="White" jres=color.white
+    //% fixedInstance whenUsed block="white" jres=color.white
     export const White = color.gradient(0xFFFFFF, 0xFFFFFF, 16);
 
     // https://lospec.com/palette-list/poke14
-    //% fixedInstance whenUsed block="Poke" jres=color.poke
+    //% fixedInstance whenUsed block="poke" jres=color.poke
     export const Poke = hexArrayToPalette([
         0x000000,
         0xffffff,
@@ -117,7 +117,7 @@ namespace color {
     ]);
 
     // https://lospec.com/palette-list/still-life
-    //% fixedInstance whenUsed block="StillLife" jres=color.stilllife
+    //% fixedInstance whenUsed block="still life" jres=color.stilllife
     export const StillLife = hexArrayToPalette([
         0x000000,
         0x3f2811,
@@ -138,7 +138,7 @@ namespace color {
     ]);
 
     // https://lospec.com/palette-list/steam-lords, missing 0xa0b9ba
-    //% fixedInstance whenUsed block="SteamPunk" jres=color.steampunk
+    //% fixedInstance whenUsed block="steam punk" jres=color.steampunk
     export const SteamPunk = hexArrayToPalette([
         0x000000,
         0x213b25,
@@ -159,7 +159,7 @@ namespace color {
     ])
 
     // https://lospec.com/palette-list/sweetie-16, missing 0x73eff7
-    //% fixedInstance whenUsed block="Sweet" jres=color.sweet
+    //% fixedInstance whenUsed block="sweet" jres=color.sweet
     export const Sweet = hexArrayToPalette([
         0x000000,
         0x1a1c2c,
@@ -180,7 +180,7 @@ namespace color {
     ]);
 
     // https://lospec.com/palette-list/na16, missing 0x70377f
-    //% fixedInstance whenUsed block="Adventure" jres=color.adventure
+    //% fixedInstance whenUsed block="adventure" jres=color.adventure
     export const Adventure = hexArrayToPalette([
         0x000000,
         0x8c8fae,
@@ -200,7 +200,7 @@ namespace color {
         0x1f0e1c
     ]);
 
-    //% fixedInstance whenUsed block="Arcade" jres=color.arcade
+    //% fixedInstance whenUsed block="arcade" jres=color.arcade
     export const Arcade = hexArrayToPalette([
         0x000000,
         0xFFFFFF,

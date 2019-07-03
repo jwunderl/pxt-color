@@ -201,6 +201,43 @@ namespace color {
         }
     }
 
+    // store the last palette and fade so that it can be cleared
+    let lastPaletteBeforeFade: Palette;
+    let lastEffect: FadeEffect;
+
+    //% fixedInstances
+    export class FadeEffect implements effects.BackgroundEffect {
+        protected currentFade: Fade;
+
+        constructor(protected fadeFactory: () => Fade) { }
+
+        /**
+         * Apply this effect to the screen's color palette
+         */
+        //% blockId=effectStartScreenFade
+        //% block="apply fade effect %effect||over %duration ms"
+        //% duration.shadow=timePicker
+        //% blockNamespace=scene
+        //% weight=90 help=effects/start-screen-effect
+        startScreenEffect(duration = 2000) {
+            lastEffect.stop();
+            lastEffect = this;
+            lastPaletteBeforeFade = currentPalette();
+            this.currentFade = this.fadeFactory();
+
+            this.currentFade.start(duration);
+        }
+
+        stop() {
+            if (lastEffect == this) {
+                lastEffect = undefined;
+                if (this.currentFade) {
+                    this.currentFade.stop();
+                }
+            }
+        }
+    }
+
     /**
      * Dynamically set all or part of the game's current palette
      *
@@ -230,6 +267,22 @@ namespace color {
         }
 
         image.setPalette(currentColors);
+    }
+
+    /**
+     * Clear the last fade effect
+     */
+    //% blockId=colorClearFadeEffects block="clear fade effect"
+    //% weight=20
+    export function clearFadeEffect() {
+        if (lastEffect) {
+            lastEffect.stop()
+        }
+
+        if (lastPaletteBeforeFade) {
+            setPalette(lastPaletteBeforeFade)
+            lastPaletteBeforeFade = undefined;
+        }
     }
 
     export function resetColorsToDefault() {
