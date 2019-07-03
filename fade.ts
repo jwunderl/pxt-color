@@ -226,7 +226,7 @@ namespace color {
     //% start.fieldOptions.columns=4
     //% end.fieldEditor="imagedropdown"
     //% end.fieldOptions.columns=4
-    //% duration.fieldEditor=timePicker
+    //% duration.shadow=timePicker
     export function startFade(start: Palette, end: Palette, duration = 2000) {
         if (!start || !end || start.length !== end.length)
             return;
