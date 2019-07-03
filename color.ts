@@ -1,3 +1,4 @@
+//% weight=70 color="#105722" icon="\uf043"
 namespace color {
     let currentColors: Buffer;
 
