@@ -219,7 +219,7 @@ namespace color {
         //% duration.shadow=timePicker
         //% weight=60 help=effects/start-screen-effect
         startScreenEffect(duration = 2000) {
-            lastEffect.stop();
+            if (lastEffect) lastEffect.stop();
             lastEffect = this;
             lastPaletteBeforeFade = currentPalette();
             this.currentFade = this.fadeFactory();
