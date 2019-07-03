@@ -123,7 +123,7 @@ scene.setBackgroundImage(img`
 
 // scene.setBackgroundColor(0xF);
 
-color.Brighten(5000)
+// color.Brighten(5000)
 
 // color.setPalette(color.Arcade)
 // color.setPalette(color.Adafruit);
@@ -138,7 +138,6 @@ color.Brighten(5000)
 // color.startFadeUntilDone(color.Arcade, color.Black, 2000);
 // color.startFadeUntilDone(color.currentPalette(), color.GrayScale, 2000);
 
-// new color.Fade()
 //     .setEndColor(0x1, 0xFF0000)
 //     .setEndColor(0x2, 0x00FF00)
 //     .setEndColor(0x3, 0x0000FF)

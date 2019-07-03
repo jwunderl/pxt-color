@@ -1,5 +1,4 @@
 namespace color {
-
     //% fixedInstance whenUsed block="fade to black"
     export const FadeToBlack = new FadeEffect(() => {
         return new Fade()

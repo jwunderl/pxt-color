@@ -2,8 +2,8 @@ namespace color {
     export class Fade {
         protected startTime: number;
         protected duration: number;
-        startPalette: Palette;
-        endPalette: Palette;
+        protected startPalette: Palette;
+        protected endPalette: Palette;
 
         constructor() { }
 
@@ -110,8 +110,10 @@ namespace color {
 
         public clone(): Fade {
             const fade = new Fade();
-            fade.startPalette = this.startPalette.clone();
-            fade.endPalette = this.endPalette.clone();
+            if (this.startPalette)
+                fade.startPalette = this.startPalette.clone();
+            if (this.endPalette)
+                fade.endPalette = this.endPalette.clone();
             return fade;
         }
 
@@ -145,7 +147,7 @@ namespace color {
             orig: Palette,
             h: (rgb: RGB, index: number, palette: Palette) => RGB
         ): Palette {
-            const p = orig.clone();
+            const p = orig ? orig.clone() : currentPalette();
 
             for (let i = 0; i < p.length; ++i) {
                 const initRGB = RGB.fromHexValue(p.color(i));
