@@ -68,46 +68,6 @@ namespace color {
         000000
     `);
 
-    //% fixedInstance whenUsed block="black" jres=color.black
-    export const Black = bufferToPalette(hex`
-        000000
-        000000
-        000000
-        000000
-        000000
-        000000
-        000000
-        000000
-        000000
-        000000
-        000000
-        000000
-        000000
-        000000
-        000000
-        000000
-    `);
-
-    //% fixedInstance whenUsed block="white" jres=color.white
-    export const White = bufferToPalette(hex`
-        FFFFFF
-        FFFFFF
-        FFFFFF
-        FFFFFF
-        FFFFFF
-        FFFFFF
-        FFFFFF
-        FFFFFF
-        FFFFFF
-        FFFFFF
-        FFFFFF
-        FFFFFF
-        FFFFFF
-        FFFFFF
-        FFFFFF
-        FFFFFF
-    `);
-
     // https://lospec.com/palette-list/poke14
     //% fixedInstance whenUsed block="poke" jres=color.poke
     export const Poke = bufferToPalette(hex`
@@ -252,5 +212,45 @@ namespace color {
         E5CDC4
         91463d
         000000
+    `);
+
+    //% fixedInstance whenUsed block="black" jres=color.black
+    export const Black = bufferToPalette(hex`
+        000000
+        000000
+        000000
+        000000
+        000000
+        000000
+        000000
+        000000
+        000000
+        000000
+        000000
+        000000
+        000000
+        000000
+        000000
+        000000
+    `);
+
+    //% fixedInstance whenUsed block="white" jres=color.white
+    export const White = bufferToPalette(hex`
+        FFFFFF
+        FFFFFF
+        FFFFFF
+        FFFFFF
+        FFFFFF
+        FFFFFF
+        FFFFFF
+        FFFFFF
+        FFFFFF
+        FFFFFF
+        FFFFFF
+        FFFFFF
+        FFFFFF
+        FFFFFF
+        FFFFFF
+        FFFFFF
     `);
 } 
