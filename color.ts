@@ -40,6 +40,10 @@ namespace color {
             this._b = Math.clamp(0, 255, v);
         }
 
+        toString(): string {
+            return `(r${ this._r }, g${ this._g }, b${ this._b })`;
+        }
+
         hexValue(): Color {
             return toColor(
                 this.red,
@@ -91,6 +95,10 @@ namespace color {
         }
         set luminosity(v: number) {
             this.l = Math.clamp(0, 1, v);
+        }
+
+        toString(): string {
+            return `(h${this.h}, s${this.s}, l${this.l})`;
         }
 
         hexValue(): Color {
