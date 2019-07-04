@@ -264,4 +264,4 @@ namespace color {
             activeFade.pauseUntilDone();
         }
     }
-} 
+}
