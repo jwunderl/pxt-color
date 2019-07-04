@@ -103,46 +103,34 @@ namespace color {
 
         // https://gist.github.com/vahidk/05184faf3d92a0aa1b46aeaa93b07786
         hexValue(): Color {
-            let r0 = this.luminosity;
-            let g0 = this.luminosity;
-            let b0 = this.luminosity;
-            const hue = this.hue / 360;
+            const chroma = (1 - Math.abs(2 * this.luminosity - 1)) * this.saturation;
+            const hp = this.hue / 60.0;
+            // second largest component of this color
+            const x = chroma * (1 - Math.abs((hp % 2) - 1));
 
-            if (this.saturation !== 0) {
-                const toRGB = (p: number, q: number, t: number) => {
-                    if (t < 0) {
-                        t += 1;
-                    } else if (t > 1) {
-                        t -= 1;
-                    }
+            // 'point along the bottom three faces of the RGB cube'
+            let rgb1: number[];
+            if (this.hue === undefined)
+                rgb1 = [0, 0, 0];
+            else if (hp <= 1)
+                rgb1 = [chroma, x, 0];
+            else if (hp <= 2)
+                rgb1 = [x, chroma, 0];
+            else if (hp <= 3)
+                rgb1 = [0, chroma, x];
+            else if (hp <= 4)
+                rgb1 = [0, x, chroma];
+            else if (hp <= 5)
+                rgb1 = [x, 0, chroma];
+            else if (hp <= 6)
+                rgb1 = [chroma, 0, x];
 
-                    if (t < 1 / 6) {
-                        return p + (q - p) * 6 * t;
-                    } else if (t < 1 / 2) {
-                        return q;
-                    } else if (t < 2 / 3) {
-                        return p + (q - p) * (2 / 3 - t) * 6;
-                    } else {
-                        return p;
-                    }
-                }
-
-                const q = this.luminosity < 0.5
-                    ? this.luminosity * (1 + this.saturation)
-                    : this.luminosity + this.saturation - this.luminosity * this.saturation;
-                const p = 2 * this.luminosity - q;
-
-                r0 = toRGB(p, q, hue + 1 / 3);
-                g0 = toRGB(p, q, hue);
-                b0 = toRGB(p, q, hue - 1 / 3);
-            }
-
-            return rgbToNumber(
-                new RGB(
-                    Math.round(r0 * 255),
-                    Math.round(g0 * 255),
-                    Math.round(b0 * 255)
-                )
+            // lightness match component
+            let m = this.luminosity - chroma * 0.5;
+            return toColor(
+                Math.round(255 * (rgb1[0] + m)),
+                Math.round(255 * (rgb1[1] + m)),
+                Math.round(255 * (rgb1[2] + m))
             );
         }
 

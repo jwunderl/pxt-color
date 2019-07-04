@@ -123,7 +123,8 @@ scene.setBackgroundImage(img`
 
 // conversions:
 // game.splash(color.HSL.fromHexValue(0x00bfff) + "") // should be ~~hsl(195, 1.0, 0.5)
-game.splash(color.HSL.fromHexValue(0xffbfff) + "") // should be ~~hsl(300, 1.0, .87)
+// game.splash(color.HSL.fromHexValue(0xffbfff) + "") // should be ~~hsl(300, 1.0, .87)
+game.splash((new color.HSL(300, 1.0, .87).hexValue()) + " ") // should be ~~ 0xFFBDFF (16706319)
 
 // scene.setBackgroundColor(0xF);
 
