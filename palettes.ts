@@ -9,214 +9,248 @@ namespace color {
     export const originalPalette = bufferToPalette(hex`__palette`);
 
     //% fixedInstance whenUsed block="adafruit" jres=color.adafruit
-    export const Adafruit = hexArrayToPalette([
-        0x000000,
-        0x17ABFF,
-        0xDF2929,
-        0xC600FF,
-        0xFF007D,
-        0x00FF72,
-        0xe5FF00,
-        0x0034FF,
-        0xFFFFFF,
-        0x00EFFF,
-        0xFF0000,
-        0x7400DB,
-        0x636363,
-        0xFF7a00,
-        0x2D9F00,
-        0x000000
-    ]);
+    export const Adafruit = bufferToPalette(hex`
+        000000
+        17ABFF
+        DF2929
+        C600FF
+        FF007D
+        00FF72
+        e5FF00
+        0034FF
+        FFFFFF
+        00EFFF
+        FF0000
+        7400DB
+        636363
+        FF7a00
+        2D9F00
+        000000
+    `);
 
     //% fixedInstance whenUsed block="matte" jres=color.matte
-    export const Matte = hexArrayToPalette([
-        0x000000,
-        0x1D2B53,
-        0x7E2553,
-        0x008751,
-        0xAB5236,
-        0x5F574F,
-        0xC2C3C7,
-        0xFFF1E8,
-        0xFF004D,
-        0xFFA300,
-        0xFFEC27,
-        0x00E436,
-        0x29ADFF,
-        0x83769C,
-        0xFF77A8,
-        0xFFCCAA
-    ]);
+    export const Matte = bufferToPalette(hex`
+        000000
+        1D2B53
+        7E2553
+        008751
+        AB5236
+        5F574F
+        C2C3C7
+        FFF1E8
+        FF004D
+        FFA300
+        FFEC27
+        00E436
+        29ADFF
+        83769C
+        FF77A8
+        FFCCAA
+    `);
 
     //% fixedInstance whenUsed block="gray scale" jres=color.grayscale
-    export const GrayScale = hexArrayToPalette([
-        0x000000,
-        0xFFFFFF,
-        0xEDEDED,
-        0xDBDBDB,
-        0xC8C8C8,
-        0xB6B6B6,
-        0xA4A4A4,
-        0x929292,
-        0x808080,
-        0x6D6D6D,
-        0x5B5B5B,
-        0x494949,
-        0x373737,
-        0x242424,
-        0x121212,
-        0x000000
-    ]);
+    export const GrayScale = bufferToPalette(hex`
+        000000
+        FFFFFF
+        EDEDED
+        DBDBDB
+        C8C8C8
+        B6B6B6
+        A4A4A4
+        929292
+        808080
+        6D6D6D
+        5B5B5B
+        494949
+        373737
+        242424
+        121212
+        000000
+    `);
 
     //% fixedInstance whenUsed block="black" jres=color.black
-    export const Black = color.gradient(0x000000, 0x000000, 16);
+    export const Black = bufferToPalette(hex`
+        000000
+        000000
+        000000
+        000000
+        000000
+        000000
+        000000
+        000000
+        000000
+        000000
+        000000
+        000000
+        000000
+        000000
+        000000
+        000000
+    `);
 
     //% fixedInstance whenUsed block="white" jres=color.white
-    export const White = color.gradient(0xFFFFFF, 0xFFFFFF, 16);
+    export const White = bufferToPalette(hex`
+        FFFFFF
+        FFFFFF
+        FFFFFF
+        FFFFFF
+        FFFFFF
+        FFFFFF
+        FFFFFF
+        FFFFFF
+        FFFFFF
+        FFFFFF
+        FFFFFF
+        FFFFFF
+        FFFFFF
+        FFFFFF
+        FFFFFF
+        FFFFFF
+    `);
 
     // https://lospec.com/palette-list/poke14
     //% fixedInstance whenUsed block="poke" jres=color.poke
-    export const Poke = hexArrayToPalette([
-        0x000000,
-        0xffffff,
-        0xe8958b,
-        0xd45362,
-        0x612431,
-        0xf5dc8c,
-        0xcc8945,
-        0x8f3f29,
-        0xc0fac2,
-        0x5dd48f,
-        0x417d53,
-        0x6cadeb,
-        0x5162c2,
-        0x24325e,
-        0x1b1221,
-        0x000000
-    ]);
+    export const Poke = bufferToPalette(hex`
+        000000
+        ffffff
+        e8958b
+        d45362
+        612431
+        f5dc8c
+        cc8945
+        8f3f29
+        c0fac2
+        5dd48f
+        417d53
+        6cadeb
+        5162c2
+        24325e
+        1b1221
+        000000
+    `);
 
     // https://lospec.com/palette-list/warioware-diy
     //% fixedInstance whenUsed block="DIY" jres=color.diy
-    export const DIY = hexArrayToPalette([
-        0x000000,
-        0xffffff,
-        0xf8d898,
-        0xf8a830,
-        0xc04800,
-        0xf80000,
-        0xc868e8,
-        0x10c0c8,
-        0x2868c0,
-        0x089050,
-        0x70d038,
-        0xf8f858,
-        0x787878,
-        0xc0c0c0,
-        0xf8f8f8,
-        0x000000
-    ]);
+    export const DIY = bufferToPalette(hex`
+        000000
+        ffffff
+        f8d898
+        f8a830
+        c04800
+        f80000
+        c868e8
+        10c0c8
+        2868c0
+        089050
+        70d038
+        f8f858
+        787878
+        c0c0c0
+        f8f8f8
+        000000
+    `);
 
     // https://lospec.com/palette-list/still-life
     //% fixedInstance whenUsed block="still life" jres=color.stilllife
-    export const StillLife = hexArrayToPalette([
-        0x000000,
-        0x3f2811,
-        0x7a2222,
-        0xd13b27,
-        0xe07f8a,
-        0x5d853a,
-        0x68c127,
-        0xb3e868,
-        0x122615,
-        0x513155,
-        0x286fb8,
-        0x9b8bff,
-        0xa8e4d4,
-        0xcc8218,
-        0xc7b581,
-        0x000000
-    ]);
+    export const StillLife = bufferToPalette(hex`
+        000000
+        3f2811
+        7a2222
+        d13b27
+        e07f8a
+        5d853a
+        68c127
+        b3e868
+        122615
+        513155
+        286fb8
+        9b8bff
+        a8e4d4
+        cc8218
+        c7b581
+        000000
+    `);
 
     // https://lospec.com/palette-list/steam-lords, missing 0xa0b9ba
     //% fixedInstance whenUsed block="steam punk" jres=color.steampunk
-    export const SteamPunk = hexArrayToPalette([
-        0x000000,
-        0x213b25,
-        0x3a604a,
-        0x4f7754,
-        0xa19f7c,
-        0x77744f,
-        0x775c4f,
-        0x603b3a,
-        0x3b2137,
-        0x170e19,
-        0x2f213b,
-        0x433a60,
-        0x4f5277,
-        0x65738c,
-        0x7c94a1,
-        0xc0d1cc
-    ])
+    export const SteamPunk = bufferToPalette(hex`
+        000000
+        213b25
+        3a604a
+        4f7754
+        a19f7c
+        77744f
+        775c4f
+        603b3a
+        3b2137
+        170e19
+        2f213b
+        433a60
+        4f5277
+        65738c
+        7c94a1
+        c0d1cc
+    `)
 
     // https://lospec.com/palette-list/sweetie-16, missing 0x73eff7
     //% fixedInstance whenUsed block="sweet" jres=color.sweet
-    export const Sweet = hexArrayToPalette([
-        0x000000,
-        0x1a1c2c,
-        0x5d275d,
-        0xb13e53,
-        0xef7d57,
-        0xffcd75,
-        0xa7f070,
-        0x38b764,
-        0x257179,
-        0x29366f,
-        0x3b5dc9,
-        0x41a6f6,
-        0xf4f4f4,
-        0x94b0c2,
-        0x566c86,
-        0x333c57
-    ]);
+    export const Sweet = bufferToPalette(hex`
+        000000
+        1a1c2c
+        5d275d
+        b13e53
+        ef7d57
+        ffcd75
+        a7f070
+        38b764
+        257179
+        29366f
+        3b5dc9
+        41a6f6
+        f4f4f4
+        94b0c2
+        566c86
+        333c57
+    `);
 
     // https://lospec.com/palette-list/na16, missing 0x70377f
     //% fixedInstance whenUsed block="adventure" jres=color.adventure
-    export const Adventure = hexArrayToPalette([
-        0x000000,
-        0x8c8fae,
-        0x584563,
-        0x3e2137,
-        0x9a6348,
-        0xd79b7d,
-        0xf5edba,
-        0xc0c741,
-        0x647d34,
-        0xe4943a,
-        0x9d303b,
-        0xd26471,
-        0x7ec4c1,
-        0x34859d,
-        0x17434b,
-        0x1f0e1c
-    ]);
+    export const Adventure = bufferToPalette(hex`
+        000000
+        8c8fae
+        584563
+        3e2137
+        9a6348
+        d79b7d
+        f5edba
+        c0c741
+        647d34
+        e4943a
+        9d303b
+        d26471
+        7ec4c1
+        34859d
+        17434b
+        1f0e1c
+    `);
 
     //% fixedInstance whenUsed block="arcade" jres=color.arcade
-    export const Arcade = hexArrayToPalette([
-        0x000000,
-        0xFFFFFF,
-        0xFF2121,
-        0xFF93C4,
-        0xFF8135,
-        0xFFF609,
-        0x249CA3,
-        0x78DC52,
-        0x003FAD,
-        0x87F2FF,
-        0x8E2EC4,
-        0xA4839F,
-        0x5C406c,
-        0xE5CDC4,
-        0x91463d,
-        0x000000
-    ]);
+    export const Arcade = bufferToPalette(hex`
+        000000
+        FFFFFF
+        FF2121
+        FF93C4
+        FF8135
+        FFF609
+        249CA3
+        78DC52
+        003FAD
+        87F2FF
+        8E2EC4
+        A4839F
+        5C406c
+        E5CDC4
+        91463d
+        000000
+    `);
 } 
