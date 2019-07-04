@@ -30,10 +30,8 @@ namespace color {
         public start(duration = 1000): Fade {
             init();
             this.duration = duration;
-            if (!this._startPalette)
-                this._startPalette = currentPalette();
 
-            color.setPalette(this._startPalette);
+            color.setPalette(this.startPalette());
             this.startTime = game.runtime();
             activeFade = this;
             return this;
@@ -55,11 +53,7 @@ namespace color {
         }
 
         public setStartColor(index: number, col: Color): Fade {
-            if (!this._startPalette) {
-                this._startPalette = currentPalette();
-            }
-
-            this._startPalette.setColor(index, col);
+            this.startPalette().setColor(index, col);
             return this;
         }
 
@@ -69,11 +63,7 @@ namespace color {
         }
 
         public setEndColor(index: number, col: Color): Fade {
-            if (!this._endPalette) {
-                this._endPalette = currentPalette();
-            }
-
-            this._endPalette.setColor(index, col);
+            this.endPalette().setColor(index, col);
             return this;
         }
 
@@ -107,7 +97,6 @@ namespace color {
 
         public then(h: (fade: Fade) => void): Fade {
             h(this);
-
             return this;
         }
 
