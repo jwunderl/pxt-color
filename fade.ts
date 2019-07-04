@@ -2,10 +2,24 @@ namespace color {
     export class Fade {
         protected startTime: number;
         protected duration: number;
-        protected startPalette: Palette;
-        protected endPalette: Palette;
+        protected _startPalette: Palette;
+        protected _endPalette: Palette;
 
         constructor() { }
+
+        public startPalette(): Palette {
+            if (!this._startPalette) {
+                this._startPalette = currentPalette();
+            }
+            return this._startPalette;
+        }
+
+        public endPalette(): Palette {
+            if (!this._endPalette) {
+                this._endPalette = currentPalette();
+            }
+            return this._endPalette;
+        }
 
         public isActive(): boolean {
             return this.startTime !== undefined
@@ -16,10 +30,10 @@ namespace color {
         public start(duration = 1000): Fade {
             init();
             this.duration = duration;
-            if (!this.startPalette)
-                this.startPalette = currentPalette();
+            if (!this._startPalette)
+                this._startPalette = currentPalette();
 
-            color.setPalette(this.startPalette);
+            color.setPalette(this._startPalette);
             this.startTime = game.runtime();
             activeFade = this;
             return this;
@@ -36,52 +50,52 @@ namespace color {
         }
 
         public setStartPalette(colors: Palette): Fade {
-            this.startPalette = colors.clone();
+            this._startPalette = colors.clone();
             return this;
         }
 
         public setStartColor(index: number, col: Color): Fade {
-            if (!this.startPalette) {
-                this.startPalette = currentPalette();
+            if (!this._startPalette) {
+                this._startPalette = currentPalette();
             }
 
-            this.startPalette.setColor(index, col);
+            this._startPalette.setColor(index, col);
             return this;
         }
 
         public setEndPalette(colors: Palette): Fade {
-            this.endPalette = colors.clone();
+            this._endPalette = colors.clone();
             return this;
         }
 
         public setEndColor(index: number, col: Color): Fade {
-            if (!this.endPalette) {
-                this.endPalette = currentPalette();
+            if (!this._endPalette) {
+                this._endPalette = currentPalette();
             }
 
-            this.endPalette.setColor(index, col);
+            this._endPalette.setColor(index, col);
             return this;
         }
 
         public step(): boolean {
-            if (!this.endPalette || this.startTime === undefined) {
+            if (!this._endPalette || this.startTime === undefined) {
                 return true;
             }
 
             if (!this.isActive()) {
-                color.setPalette(this.endPalette);
+                color.setPalette(this._endPalette);
                 this.startTime = undefined;
                 return true;
             }
 
             const time = game.runtime() - this.startTime;
 
-            const p = new Palette(this.startPalette.length);
+            const p = new Palette(this._startPalette.length);
 
             for (let i = 0; i < p.length; ++i) {
                 const col = color.partialColorTransition(
-                    this.startPalette.color(i),
-                    this.endPalette.color(i),
+                    this._startPalette.color(i),
+                    this._endPalette.color(i),
                     time / this.duration
                 );
                 p.setColor(i, col);
@@ -91,8 +105,9 @@ namespace color {
             return false;
         }
 
-        public pause(duration: number): Fade {
-            pause(duration);
+        public then(h: (fade: Fade) => void): Fade {
+            h(this);
+
             return this;
         }
 
@@ -102,63 +117,67 @@ namespace color {
         }
 
         public reverse(): Fade {
-            const t = this.startPalette;
+            const t = this._startPalette;
 
-            this.startPalette = this.endPalette;
-            this.endPalette = t;
+            this._startPalette = this._endPalette;
+            this._endPalette = t;
 
             return this;
         }
 
         public clone(): Fade {
             const fade = new Fade();
-            if (this.startPalette)
-                fade.startPalette = this.startPalette.clone();
-            if (this.endPalette)
-                fade.endPalette = this.endPalette.clone();
+            if (this._startPalette)
+                fade._startPalette = this._startPalette.clone();
+            if (this._endPalette)
+                fade._endPalette = this._endPalette.clone();
             return fade;
         }
 
-        public mapEndRGB(h: (rgb: RGB, index: number, palette: Palette) => RGB): Fade {
+        public mapEndRGB(
+            h: (rgb: RGB, index: number, palette: Palette) => RGB,
+            firstIndex?: number,
+            lastIndex?: number
+        ): Fade {
             const out = this.clone();
+            const p = this.endPalette().clone();
 
-            out.setEndPalette(
-                this.mapPaletteRGB(
-                    this.endPalette,
-                    h
-                )
-            );
+            firstIndex = firstIndex | 0;
+            lastIndex = lastIndex === undefined
+                ? p.length - 1
+                : Math.min(p.length - 1, lastIndex);
 
-            return out;
-        }
-
-        public mapStartRGB(h: (rgb: RGB, index: number, palette: Palette) => RGB): Fade {
-            const out = this.clone();
-
-            out.setStartPalette(
-                this.mapPaletteRGB(
-                    this.startPalette,
-                    h
-                )
-            );
-
-            return out;
-        }
-
-        protected mapPaletteRGB(
-            orig: Palette,
-            h: (rgb: RGB, index: number, palette: Palette) => RGB
-        ): Palette {
-            const p = orig ? orig.clone() : currentPalette();
-
-            for (let i = 0; i < p.length; ++i) {
+            for (let i = firstIndex; i <= lastIndex; ++i) {
                 const initRGB = RGB.fromHexValue(p.color(i));
                 const applied = h(initRGB, i, p);
                 p.setColor(i, applied.hexValue());
             }
 
-            return p;
+            return out
+                .setEndPalette(p);
+        }
 
+        public mapEndHSL(
+            h: (hsl: HSL, index: number, palette: Palette) => HSL,
+            firstIndex?: number,
+            lastIndex?: number
+        ): Fade {
+            const out = this.clone();
+            const p = this.endPalette().clone();
+
+            firstIndex = firstIndex | 0;
+            lastIndex = lastIndex === undefined
+                ? p.length - 1
+                : Math.min(p.length - 1, lastIndex);
+
+            for (let i = firstIndex; i <= lastIndex; ++i) {
+                const initHSL = HSL.fromHexValue(p.color(i));
+                const applied = h(initHSL, i, p);
+                p.setColor(i, applied.hexValue());
+            }
+
+            return out
+                .setEndPalette(p);
         }
     }
 
@@ -210,7 +229,7 @@ namespace color {
     function init() {
         if (!currentScene) {
             game.forever(() => {
-                if (activeFade && activeFade.isActive()) {
+                if (activeFade) {
                     const finished = activeFade.step();
                     if (finished) {
                         activeFade = undefined;
