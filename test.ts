@@ -121,6 +121,10 @@ scene.setBackgroundImage(img`
     1 1 1 1 1 1 1 1 1 1 2 2 2 2 2 2 2 2 2 2 3 3 3 3 3 3 3 3 3 3 4 4 4 4 4 4 4 4 4 4 5 5 5 5 5 5 5 5 5 5 6 6 6 6 6 6 6 6 6 6 7 7 7 7 7 7 7 7 7 7 8 8 8 8 8 8 8 8 8 8 9 9 9 9 9 9 9 9 9 9 a a a a a a a a a a b b b b b b b b b b c c c c c c c c c c d d d d d d d d d d e e e e e e e e e e f f f f f f f f f f . . . . . . . . . .
 `);
 
+// conversions:
+// game.splash(color.HSL.fromHexValue(0x00bfff) + "") // should be ~~hsl(195, 1.0, 0.5)
+game.splash(color.HSL.fromHexValue(0xffbfff) + "") // should be ~~hsl(300, 1.0, .87)
+
 // scene.setBackgroundColor(0xF);
 
 // color.setPalette(color.Arcade)
