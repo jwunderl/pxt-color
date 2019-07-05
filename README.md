@@ -31,13 +31,6 @@ Pause until the current fade is completed. This can be useful when you want a fa
 
 Clear the last fade effect, by resetting the palette to what it was before that effect.
 
-## TODO
-
-- [ ] Add "icon.png" image (300x200) in the root folder
-- [ ] Add "- beta" to the GitHub project description if you are still iterating it.
-
-Read more at https://arcade.makecode.com/extensions
-
 ## Supported targets
 
 * for PXT/arcade
