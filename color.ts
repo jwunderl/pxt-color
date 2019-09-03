@@ -280,8 +280,6 @@ namespace color {
      */
     //% blockId=colorSetPalette block="set color palette to %palette"
     //% weight=90
-    //% palette.fieldEditor="imagedropdown"
-    //% palette.fieldOptions.columns=4
     export function setPalette(palette: Palette, start = 0, length = 0, paletteOffset = 0) {
         if (!currentColors)
             currentColors = originalPalette.buffer();

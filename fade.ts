@@ -234,10 +234,6 @@ namespace color {
      */
     //% blockId=colorStartFade block="fade from %start to %end||over %duration ms"
     //% weight=80
-    //% start.fieldEditor="imagedropdown"
-    //% start.fieldOptions.columns=4
-    //% end.fieldEditor="imagedropdown"
-    //% end.fieldOptions.columns=4
     //% duration.shadow=timePicker
     export function startFade(start: Palette, end: Palette, duration = 2000) {
         if (!start || !end || start.length !== end.length)
