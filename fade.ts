@@ -2,19 +2,19 @@ namespace color {
     export class Fade {
         protected startTime: number;
         protected duration: number;
-        protected _startPalette: Palette;
-        protected _endPalette: Palette;
+        protected _startPalette: ColorBuffer;
+        protected _endPalette: ColorBuffer;
 
         constructor() { }
 
-        public startPalette(): Palette {
+        public startPalette(): ColorBuffer {
             if (!this._startPalette) {
                 this._startPalette = currentPalette();
             }
             return this._startPalette;
         }
 
-        public endPalette(): Palette {
+        public endPalette(): ColorBuffer {
             if (!this._endPalette) {
                 this._endPalette = currentPalette();
             }
@@ -47,8 +47,10 @@ namespace color {
             return this;
         }
 
-        public setStartPalette(colors: Palette): Fade {
-            this._startPalette = colors.clone();
+        public setStartPalette(colors: ColorBuffer): Fade {
+            this._startPalette = colors.slice(0, colors.length);
+
+            console.log(colors.length + " " + this._startPalette.length)
             return this;
         }
 
@@ -57,8 +59,8 @@ namespace color {
             return this;
         }
 
-        public setEndPalette(colors: Palette): Fade {
-            this._endPalette = colors.clone();
+        public setEndPalette(colors: ColorBuffer): Fade {
+            this._endPalette = colors.slice();
             return this;
         }
 
@@ -69,10 +71,12 @@ namespace color {
 
         public step(): boolean {
             if (!this._endPalette || this.startTime === undefined) {
+                console.log("a")
                 return true;
             }
 
             if (!this.isActive()) {
+                console.log("b")
                 color.setPalette(this._endPalette);
                 this.startTime = undefined;
                 return true;
@@ -80,8 +84,9 @@ namespace color {
 
             const time = game.runtime() - this.startTime;
 
-            const p = new Palette(this._startPalette.length);
+            const p = new ColorBuffer(this._startPalette.length);
 
+            console.log("c" + this._startPalette.length)
             for (let i = 0; i < p.length; ++i) {
                 const col = color.partialColorTransition(
                     this._startPalette.color(i),
@@ -90,6 +95,7 @@ namespace color {
                 );
                 p.setColor(i, col);
             }
+            console.log(p.color(1))
 
             color.setPalette(p);
             return false;
@@ -117,19 +123,19 @@ namespace color {
         public clone(): Fade {
             const fade = new Fade();
             if (this._startPalette)
-                fade._startPalette = this._startPalette.clone();
+                fade._startPalette = this._startPalette.slice(0, this._startPalette.length);
             if (this._endPalette)
-                fade._endPalette = this._endPalette.clone();
+                fade._endPalette = this._endPalette.slice(0, this._endPalette.length);
             return fade;
         }
 
         public mapEndRGB(
-            h: (rgb: RGB, index: number, palette: Palette) => RGB,
+            h: (rgb: RGB, index: number, palette: ColorBuffer) => RGB,
             firstIndex?: number,
             lastIndex?: number
         ): Fade {
             const out = this.clone();
-            const p = this.endPalette().clone();
+            const p = this.endPalette().slice(0, this._endPalette.length);
 
             firstIndex = firstIndex | 0;
             lastIndex = lastIndex === undefined
@@ -147,12 +153,12 @@ namespace color {
         }
 
         public mapEndHSL(
-            h: (hsl: HSL, index: number, palette: Palette) => HSL,
+            h: (hsl: HSL, index: number, palette: ColorBuffer) => HSL,
             firstIndex?: number,
             lastIndex?: number
         ): Fade {
             const out = this.clone();
-            const p = this.endPalette().clone();
+            const p = this.endPalette().slice(0, this.endPalette().length);
 
             firstIndex = firstIndex | 0;
             lastIndex = lastIndex === undefined
@@ -220,6 +226,7 @@ namespace color {
             game.forever(() => {
                 if (activeFade) {
                     const finished = activeFade.step();
+
                     if (finished) {
                         activeFade = undefined;
                     }
@@ -235,7 +242,8 @@ namespace color {
     //% blockId=colorStartFade block="fade from %start to %end||over %duration ms"
     //% weight=80
     //% duration.shadow=timePicker
-    export function startFade(start: Palette, end: Palette, duration = 2000) {
+    export function startFade(start: ColorBuffer, end: ColorBuffer, duration = 2000) {
+        console.log(start.length + " " + end.length())
         if (!start || !end || start.length !== end.length)
             return;
 
@@ -245,7 +253,7 @@ namespace color {
         activeFade.start(duration)
     }
 
-    export function startFadeUntilDone(start: Palette, end: Palette, duration?: number) {
+    export function startFadeUntilDone(start: ColorBuffer, end: ColorBuffer, duration?: number) {
         startFade(start, end, duration);
         pauseUntilFadeDone();
     }

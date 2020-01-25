@@ -172,70 +172,70 @@ namespace color {
      * A collection of colors
      */
     //% fixedInstances
-    export class Palette {
-        protected buf: Buffer;
+    // export class Palette {
+    //     protected buf: Buffer;
 
-        constructor(length = 0xF) {
-            this.buf = control.createBuffer((length) * 3);
-        }
+    //     constructor(length = 0xF) {
+    //         this.buf = control.createBuffer((length) * 3);
+    //     }
 
-        get length() {
-            return this.buf.length / 3;
-        }
+    //     get length() {
+    //         return this.buf.length / 3;
+    //     }
 
-        setColor(index: number, color: Color) {
-            if (index < 0 || index >= this.length) return;
-            if (color < 0 || color > 0xFFFFFF) return;
+    //     setColor(index: number, color: Color) {
+    //         if (index < 0 || index >= this.length) return;
+    //         if (color < 0 || color > 0xFFFFFF) return;
 
-            const start = index * 3;
-            this.buf[start] = red(color);
-            this.buf[start + 1] = green(color);
-            this.buf[start + 2] = blue(color);
-        }
+    //         const start = index * 3;
+    //         this.buf[start] = red(color);
+    //         this.buf[start + 1] = green(color);
+    //         this.buf[start + 2] = blue(color);
+    //     }
 
-        color(index: number): Color {
-            if (index < 0 || index >= this.length)
-                return -1;
+    //     color(index: number): Color {
+    //         if (index < 0 || index >= this.length)
+    //             return -1;
 
-            const start = index * 3;
-            return toColor(
-                this.buf[start],
-                this.buf[start + 1],
-                this.buf[start + 2]
-            );
-        }
+    //         const start = index * 3;
+    //         return toColor(
+    //             this.buf[start],
+    //             this.buf[start + 1],
+    //             this.buf[start + 2]
+    //         );
+    //     }
 
-        buffer(): Buffer {
-            return this.buf.slice();
-        }
+    //     buffer(): Buffer {
+    //         return this.buf.slice();
+    //     }
 
-        loadBuffer(buf: Buffer) {
-            this.buf = buf.slice();
-        }
+    //     loadBuffer(buf: Buffer) {
+    //         this.buf = buf.slice();
+    //     }
 
-        toHexArray() {
-            const output: Color[] = [];
+    //     toHexArray() {
+    //         const output: Color[] = [];
 
-            for (let i = 0; i < this.length; ++i) {
-                output.push(this.color(i));
-            }
+    //         for (let i = 0; i < this.length; ++i) {
+    //             output.push(this.color(i));
+    //         }
 
-            return output;
-        }
+    //         return output;
+    //     }
 
-        toString(): string {
-            return this.toHexArray().join(",");
-        }
+    //     toString(): string {
+    //         return this.toHexArray().join(",");
+    //     }
 
-        clone(): Palette {
-            const p = new Palette();
-            p.loadBuffer(this.buffer());
-            return p;
-        }
-    }
+    //     clone(): Palette {
+    //         const p = new Palette();
+    //         p.loadBuffer(this.buffer());
+    //         return p;
+    //     }
+    // }
 
     // store the last palette and fade so that it can be cleared
-    let lastPaletteBeforeFade: Palette;
+    let lastPaletteBeforeFade: ColorBuffer;
     let lastEffect: FadeEffect;
 
     //% fixedInstances
@@ -280,15 +280,15 @@ namespace color {
      */
     //% blockId=colorSetPalette block="set color palette to %palette"
     //% weight=90
-    export function setPalette(palette: Palette, start = 0, length = 0, paletteOffset = 0) {
-        if (!currentColors)
-            currentColors = originalPalette.buffer();
+    export function setPalette(palette: ColorBuffer, start = 0, length = 0, paletteOffset = 0) {
         if (!length || length > palette.length)
             length = palette.length;
+        if (!currentColors)
+            currentColors = originalPalette.buf.slice();
 
         const fromStart = paletteOffset * 3;
         const toStart = start * 3;
-        const asBuf = palette.buffer();
+        const asBuf = palette.buf;
 
         const copyLength = 3 * Math.clamp(0, availableColors(), length);
 
@@ -329,29 +329,29 @@ namespace color {
     /**
      * Converts an array of RGB colors into a palette buffer
      */
-    export function rgbArrayToPalette(colors: RGB[]): Palette {
+    export function rgbArrayToPalette(colors: RGB[]): ColorBuffer {
         return hexArrayToPalette(colors && colors.map(rgbToNumber));
     }
 
     /**
      * Converts an array of HSL colors into a palette buffer
      */
-    export function hslArrayToPalette(colors: HSL[]): Palette {
+    export function hslArrayToPalette(colors: HSL[]): ColorBuffer {
         return hexArrayToPalette(colors && colors.map(hsl => hsl.hexValue()));
     }
 
-    export function bufferToPalette(buf: Buffer): Palette {
-        const p = new Palette(buf.length / 3);
-        p.loadBuffer(buf);
+    export function bufferToPalette(buf: Buffer): ColorBuffer {
+        const p = new ColorBuffer(buf.length / 3);
+        p.buf = buf;
         return p;
     }
 
     /**
      * Converts an array of hex colors into a palette buffer
      */
-    export function hexArrayToPalette(colors: Color[]): Palette {
+    export function hexArrayToPalette(colors: Color[]): ColorBuffer {
         const numColors = Math.min(colors.length, availableColors());
-        const p = new Palette(numColors);
+        const p = new ColorBuffer(numColors);
 
         if (colors && colors.length) {
             for (let i = 0; i < numColors; i++) {
@@ -371,22 +371,23 @@ namespace color {
      * @param steps The number of colors to generate
      * @param offset The index to start filling in colors from
      */
-    export function gradient(start: Color, end: Color, steps = 0xF, offset = 0): Palette {
-        if (steps < 2)
-            return undefined;
+    // TODO: palette has a `color.gradient` already; see if we can clean that up in pcp
+    // export function gradient(start: Color, end: Color, steps = 0xF, offset = 0): ColorBuffer { 
+    //     if (steps < 2)
+    //         return undefined;
 
-        const grad = new Palette(steps + offset);
+    //     const grad = new ColorBuffer(steps + offset);
 
-        grad.setColor(0, start);
-        grad.setColor(steps - 1, end);
+    //     grad.setColor(0, start);
+    //     grad.setColor(steps - 1, end);
 
-        for (let i = 0; i < steps; i++) {
-            const col = partialColorTransition(start, end, i / (steps - 1));
-            grad.setColor(i + offset, col);
-        }
+    //     for (let i = 0; i < steps; i++) {
+    //         const col = partialColorTransition(start, end, i / (steps - 1));
+    //         grad.setColor(i + offset, col);
+    //     }
 
-        return grad;
-    }
+    //     return grad;
+    // }
 
     /**
      * Returns the color that is the given percentage between start and end
@@ -426,11 +427,11 @@ namespace color {
 
     export function currentPalette() {
         if (currentColors) {
-            const p = new Palette(availableColors());
-            p.loadBuffer(currentColors);
+            const p = new ColorBuffer(availableColors());
+            p.buf = currentColors.slice()
             return p;
         } else {
-            return originalPalette.clone();
+            return originalPalette.slice();
         }
     }
 

@@ -35,8 +35,8 @@ namespace color {
 
     //% fixedInstance whenUsed block="rotate palette"
     export const RotatePalette = new FadeEffect(() => {
-        const p = currentPalette().clone();
         const l = availableColors();
+        const p = currentPalette().slice(0, l);
 
         const lastColor = p.color(l - 1);
         for (let i = l - 1; i > 1; --i) {

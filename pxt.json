@@ -3,7 +3,8 @@
     "version": "0.0.30",
     "description": "",
     "dependencies": {
-        "device": "*"
+        "device": "*",
+        "palette": "*"
     },
     "files": [
         "README.md",
@@ -16,6 +17,8 @@
         "test.ts"
     ],
     "public": false,
-    "preferredEditor": "tsprj",
-    "installedVersion": "workspace:250fd874-4817-4783-a6a7-22bd8b724672"
+    "supportedTargets": [
+        "arcade"
+    ],
+    "preferredEditor": "tsprj"
 }
