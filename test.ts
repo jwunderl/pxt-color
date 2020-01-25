@@ -133,7 +133,7 @@ scene.setBackgroundImage(img`
 color.startFadeUntilDone(color.Arcade, color.Adafruit, 2000);
 // color.startFadeUntilDone(color.Adafruit, color.Matte, 2000);
 
-// const grayArcade = color.Arcade.slice();
+// const grayArcade = color._clone(color.Arcade);
 // grayArcade.setColor(0xF, 0x737373);
 // color.startFadeUntilDone(grayArcade, color.Arcade, 1000)
 

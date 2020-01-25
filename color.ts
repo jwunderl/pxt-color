@@ -168,72 +168,6 @@ namespace color {
         }
     }
 
-    /**
-     * A collection of colors
-     */
-    //% fixedInstances
-    // export class Palette {
-    //     protected buf: Buffer;
-
-    //     constructor(length = 0xF) {
-    //         this.buf = control.createBuffer((length) * 3);
-    //     }
-
-    //     get length() {
-    //         return this.buf.length / 3;
-    //     }
-
-    //     setColor(index: number, color: Color) {
-    //         if (index < 0 || index >= this.length) return;
-    //         if (color < 0 || color > 0xFFFFFF) return;
-
-    //         const start = index * 3;
-    //         this.buf[start] = red(color);
-    //         this.buf[start + 1] = green(color);
-    //         this.buf[start + 2] = blue(color);
-    //     }
-
-    //     color(index: number): Color {
-    //         if (index < 0 || index >= this.length)
-    //             return -1;
-
-    //         const start = index * 3;
-    //         return toColor(
-    //             this.buf[start],
-    //             this.buf[start + 1],
-    //             this.buf[start + 2]
-    //         );
-    //     }
-
-    //     buffer(): Buffer {
-    //         return this.buf.slice();
-    //     }
-
-    //     loadBuffer(buf: Buffer) {
-    //         this.buf = buf.slice();
-    //     }
-
-    //     toHexArray() {
-    //         const output: Color[] = [];
-
-    //         for (let i = 0; i < this.length; ++i) {
-    //             output.push(this.color(i));
-    //         }
-
-    //         return output;
-    //     }
-
-    //     toString(): string {
-    //         return this.toHexArray().join(",");
-    //     }
-
-    //     clone(): Palette {
-    //         const p = new Palette();
-    //         p.loadBuffer(this.buffer());
-    //         return p;
-    //     }
-    // }
-
     // store the last palette and fade so that it can be cleared
     let lastPaletteBeforeFade: ColorBuffer;
     let lastEffect: FadeEffect;
@@ -451,5 +385,13 @@ namespace color {
     // combine the r, g, and b components into a single number
     function toColor(r: number, g: number, b: number): Color {
         return ((r & 0xff) << 16) | ((g & 0xff) << 8) | (b & 0xff);
+    }
+
+    export function _clone(p: ColorBuffer) {
+        const out = new ColorBuffer(p.length);
+        for (let i = 0; i < p.length; ++i) {
+            out.setColor(i, p.color(i))
+        }
+        return out;
     }
 }
