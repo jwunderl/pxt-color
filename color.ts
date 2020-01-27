@@ -338,7 +338,7 @@ namespace color {
             p.buf = currentColors.slice()
             return p;
         } else {
-            return originalPalette.slice();
+            return _clone(originalPalette);
         }
     }
 
