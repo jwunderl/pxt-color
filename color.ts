@@ -57,9 +57,9 @@ namespace color {
 
         static fromHexValue(col: Color): RGB {
             return new RGB(
-                red(col),
-                green(col),
-                blue(col)
+                color.unpackR(col),
+                color.unpackG(col),
+                color.unpackB(col)
             );
         }
     }
@@ -297,33 +297,6 @@ namespace color {
     }
 
     /**
-     * Creates a palette from a gradient between two colors.
-     * The final length of the palette will be steps + offset
-     *
-     * @param start The start color
-     * @param end The end color
-     * @param steps The number of colors to generate
-     * @param offset The index to start filling in colors from
-     */
-    // TODO: palette has a `color.gradient` already; see if we can clean that up in pcp
-    // export function gradient(start: Color, end: Color, steps = 0xF, offset = 0): ColorBuffer { 
-    //     if (steps < 2)
-    //         return undefined;
-
-    //     const grad = new ColorBuffer(steps + offset);
-
-    //     grad.setColor(0, start);
-    //     grad.setColor(steps - 1, end);
-
-    //     for (let i = 0; i < steps; i++) {
-    //         const col = partialColorTransition(start, end, i / (steps - 1));
-    //         grad.setColor(i + offset, col);
-    //     }
-
-    //     return grad;
-    // }
-
-    /**
      * Returns the color that is the given percentage between start and end
      *
      * @param start the initial color (returned if percent is <= 0)
@@ -337,13 +310,13 @@ namespace color {
             return end;
         }
 
-        const r1 = red(start);
-        const g1 = green(start);
-        const b1 = blue(start);
+        const r1 = color.unpackR(start);
+        const g1 = color.unpackG(start);
+        const b1 = color.unpackB(start);
 
-        const rDiff = red(end) - r1;
-        const gDiff = green(end) - g1;
-        const bDiff = blue(end) - b1;
+        const rDiff = color.unpackR(end) - r1;
+        const gDiff = color.unpackG(end) - g1;
+        const bDiff = color.unpackB(end) - b1;
 
         return toColor(
             r1 + Math.round(rDiff * percentage),
@@ -367,19 +340,6 @@ namespace color {
         } else {
             return originalPalette.slice();
         }
-    }
-
-    // return components of color
-    function red(color: number): Color {
-        return (color >> 16) & 0xff;
-    }
-
-    function green(color: number): Color {
-        return (color >> 8) & 0xff;
-    }
-
-    function blue(color: number): Color {
-        return color & 0xff;
     }
 
     // combine the r, g, and b components into a single number
