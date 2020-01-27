@@ -167,4 +167,4 @@ new color.Fade()
     .startUntilDone(1000);
 
 
-// color.startFadeUntilDone(color.currentPalette(), color.White, 2000);
+color.startFadeUntilDone(color.currentPalette(), color.White, 2000);
