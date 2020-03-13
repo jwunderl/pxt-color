@@ -234,6 +234,53 @@ namespace color {
     }
 
     /**
+     * Set an index in the color palette to a new color.
+     *
+     * @param index the index to update; must be between 1 and 15
+     * @param color the color to set
+     */
+    //% blockId=colorSetColorAtIndex block="set color %index to %newColor"
+    //% weight=100
+    //% index.min=1 index.max=15 index.step=1
+    //% index.defl=1
+    //% newColor.shadow=colorsrgb
+    export function setColor(index: number, newColor: number) {
+        if (index <= 0 || index > 15)
+            return;
+        setPalette(hexArrayToPalette([newColor]), index | 0, 1, 0);
+    }
+
+    /**
+     * Converts red, green, blue channels into a RGB color
+     * @param red value of the red channel between 0 and 255. eg: 255
+     * @param green value of the green channel between 0 and 255. eg: 255
+     * @param blue value of the blue channel between 0 and 255. eg: 255
+     */
+    //% blockId="colorsrgb__dup" block="red %red|green %green|blue %blue"
+    //% red.min=0 red.max=255 green.min=0 green.max=255 blue.min=0 blue.max=255
+    //% help="colors/rgb"
+    //% weight=95 blockGap=8
+    export function __rgb(red: number, green: number, blue: number): number {
+        return color.rgb(red, green, blue);
+    }
+
+     /**
+     * Convert an HSV (hue, saturation, value) color to RGB
+     * @param hue value of the hue channel between 0 and 255. eg: 255
+     * @param sat value of the saturation channel between 0 and 255. eg: 255
+     * @param val value of the value channel between 0 and 255. eg: 255
+     */
+    //% blockId="colorshsv__dup" block="hue %hue|sat %sat|val %val"
+    //% hue.min=0 hue.max=255 sat.min=0 sat.max=255 val.min=0 val.max=255
+    //% help="colors/hsv"
+    //% weight=94
+    export function __hsv(hue: number, sat: number, val: number) {
+        // TODO: this and __rgb are already in colors.ts, just hidden.
+        // Overloading them isn't working at the moment; figure out why and fix
+        return color.hsv(hue, sat, val);
+    }
+
+    /**
      * Clear the last fade effect
      */
     //% blockId=colorClearFadeEffects block="clear fade effect"
