@@ -168,8 +168,11 @@ namespace color {
         }
     }
 
+    //% fixedInstances
+    export class Palette extends ColorBuffer { }
+
     // store the last palette and fade so that it can be cleared
-    let lastPaletteBeforeFade: ColorBuffer;
+    let lastPaletteBeforeFade: Palette;
     let lastEffect: FadeEffect;
 
     //% fixedInstances
@@ -214,7 +217,7 @@ namespace color {
      */
     //% blockId=colorSetPalette block="set color palette to %palette"
     //% weight=90
-    export function setPalette(palette: ColorBuffer, start = 0, length = 0, paletteOffset = 0) {
+    export function setPalette(palette: Palette, start = 0, length = 0, paletteOffset = 0) {
         if (!length || length > palette.length)
             length = palette.length;
         if (!currentColors)
@@ -310,19 +313,19 @@ namespace color {
     /**
      * Converts an array of RGB colors into a palette buffer
      */
-    export function rgbArrayToPalette(colors: RGB[]): ColorBuffer {
+    export function rgbArrayToPalette(colors: RGB[]): Palette {
         return hexArrayToPalette(colors && colors.map(rgbToNumber));
     }
 
     /**
      * Converts an array of HSL colors into a palette buffer
      */
-    export function hslArrayToPalette(colors: HSL[]): ColorBuffer {
+    export function hslArrayToPalette(colors: HSL[]): Palette {
         return hexArrayToPalette(colors && colors.map(hsl => hsl.hexValue()));
     }
 
-    export function bufferToPalette(buf: Buffer): ColorBuffer {
-        const p = new ColorBuffer(buf.length / 3);
+    export function bufferToPalette(buf: Buffer): Palette {
+        const p = new Palette(buf.length / 3);
         p.buf = buf;
         return p;
     }
@@ -330,9 +333,9 @@ namespace color {
     /**
      * Converts an array of hex colors into a palette buffer
      */
-    export function hexArrayToPalette(colors: Color[]): ColorBuffer {
+    export function hexArrayToPalette(colors: Color[]): Palette {
         const numColors = Math.min(colors.length, availableColors());
-        const p = new ColorBuffer(numColors);
+        const p = new Palette(numColors);
 
         if (colors && colors.length) {
             for (let i = 0; i < numColors; i++) {
@@ -381,7 +384,7 @@ namespace color {
 
     export function currentPalette() {
         if (currentColors) {
-            const p = new ColorBuffer(availableColors());
+            const p = new Palette(availableColors());
             p.buf = currentColors.slice()
             return p;
         } else {
@@ -394,8 +397,8 @@ namespace color {
         return ((r & 0xff) << 16) | ((g & 0xff) << 8) | (b & 0xff);
     }
 
-    export function _clone(p: ColorBuffer) {
-        const out = new ColorBuffer(p.length);
+    export function _clone(p: Palette) {
+        const out = new Palette(p.length);
         for (let i = 0; i < p.length; ++i) {
             out.setColor(i, p.color(i))
         }

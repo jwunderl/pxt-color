@@ -2,19 +2,19 @@ namespace color {
     export class Fade {
         protected startTime: number;
         protected duration: number;
-        protected _startPalette: ColorBuffer;
-        protected _endPalette: ColorBuffer;
+        protected _startPalette: Palette;
+        protected _endPalette: Palette;
 
         constructor() { }
 
-        public startPalette(): ColorBuffer {
+        public startPalette(): Palette {
             if (!this._startPalette) {
                 this._startPalette = currentPalette();
             }
             return this._startPalette;
         }
 
-        public endPalette(): ColorBuffer {
+        public endPalette(): Palette {
             if (!this._endPalette) {
                 this._endPalette = currentPalette();
             }
@@ -47,7 +47,7 @@ namespace color {
             return this;
         }
 
-        public setStartPalette(colors: ColorBuffer): Fade {
+        public setStartPalette(colors: Palette): Fade {
             this._startPalette = _clone(colors);
             return this;
         }
@@ -57,7 +57,7 @@ namespace color {
             return this;
         }
 
-        public setEndPalette(colors: ColorBuffer): Fade {
+        public setEndPalette(colors: Palette): Fade {
             this._endPalette = _clone(colors);
             return this;
         }
@@ -80,7 +80,7 @@ namespace color {
 
             const time = game.runtime() - this.startTime;
 
-            const p = new ColorBuffer(this._startPalette.length);
+            const p = new Palette(this._startPalette.length);
 
             for (let i = 0; i < p.length; ++i) {
                 const col = color.partialColorTransition(
@@ -124,7 +124,7 @@ namespace color {
         }
 
         public mapEndRGB(
-            h: (rgb: RGB, index: number, palette: ColorBuffer) => RGB,
+            h: (rgb: RGB, index: number, palette: Palette) => RGB,
             firstIndex?: number,
             lastIndex?: number
         ): Fade {
@@ -147,7 +147,7 @@ namespace color {
         }
 
         public mapEndHSL(
-            h: (hsl: HSL, index: number, palette: ColorBuffer) => HSL,
+            h: (hsl: HSL, index: number, palette: Palette) => HSL,
             firstIndex?: number,
             lastIndex?: number
         ): Fade {
@@ -236,7 +236,7 @@ namespace color {
     //% blockId=colorStartFade block="fade from %start to %end||over %duration ms"
     //% weight=80
     //% duration.shadow=timePicker
-    export function startFade(start: ColorBuffer, end: ColorBuffer, duration = 2000) {
+    export function startFade(start: Palette, end: Palette, duration = 2000) {
         if (!start || !end || start.length !== end.length)
             return;
 
@@ -246,7 +246,7 @@ namespace color {
         activeFade.start(duration)
     }
 
-    export function startFadeUntilDone(start: ColorBuffer, end: ColorBuffer, duration?: number) {
+    export function startFadeUntilDone(start: Palette, end: Palette, duration?: number) {
         startFade(start, end, duration);
         pauseUntilFadeDone();
     }
