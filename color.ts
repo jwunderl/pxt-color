@@ -1,7 +1,7 @@
 /**
  * Color library for pxt arcade
  */
-//% weight=70 color="#105722" icon="\uf043"
+//% weight=70 color="#105722" icon="\uf043" advanced=false
 namespace color {
     let currentColors: Buffer;
 
