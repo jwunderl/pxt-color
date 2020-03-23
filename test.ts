@@ -129,46 +129,48 @@ scene.setBackgroundImage(img`
 // scene.setBackgroundColor(0xF);
 
 // color.setPalette(color.Arcade)
-// color.setPalette(color.Adafruit);
-// color.FadeToBlack.startScreenEffect(2000);
-color.RotatePalette.startScreenEffect(2000)
-// new color.Fade()
-//     .setEndPalette(color.Black)
-//     .start(2000);
-pause(3000)
-// color.startFadeUntilDone(color.Arcade, color.Adafruit, 2000);
-// color.startFadeUntilDone(color.Adafruit, color.Matte, 2000);
+forever (() => {
+    color.setPalette(color.Adafruit);
+    color.FadeToBlack.startScreenEffect(2000);
+    color.RotatePalette.startScreenEffect(2000)
+    new color.Fade()
+        .setEndPalette(color.Black)
+        .start(2000);
+    pause(3000)
+    color.startFadeUntilDone(color.Arcade, color.Adafruit, 2000);
+    color.startFadeUntilDone(color.Adafruit, color.Matte, 2000);
 
-// const grayArcade = color._clone(color.Arcade);
-// grayArcade.setColor(0xF, 0x737373);
-// color.startFadeUntilDone(grayArcade, color.Arcade, 1000)
+    const grayArcade = color._clone(color.Arcade);
+    grayArcade.setColor(0xF, 0x737373);
+    color.startFadeUntilDone(grayArcade, color.Arcade, 1000)
 
-// // // fade to black
-// color.startFadeUntilDone(color.Arcade, color.Black, 2000);
-// color.startFadeUntilDone(color.currentPalette(), color.GrayScale, 2000);
+    // fade to black
+    color.startFadeUntilDone(color.Arcade, color.Black, 2000);
+    color.startFadeUntilDone(color.currentPalette(), color.GrayScale, 2000);
 
-// new color.Fade()
-//     .setEndColor(0x1, 0xFF0000)
-//     .setEndColor(0x2, 0x00FF00)
-//     .setEndColor(0x3, 0x0000FF)
-//     .setEndColor(0x4, 0xFF00FF)
-//     .setEndColor(0x5, 0xFFFF00)
-//     .setEndColor(0x6, 0x00FFFF)
-//     .setEndColor(0xA, 0xAAAAAA)
-//     .setEndColor(0xB, 0x05A2B7)
-//     .setEndColor(0xC, 0x678987)
-//     .setEndColor(0xD, 0x123456)
-//     .setEndColor(0xF, 0xFFFFFF)
-//     .start(2000)
-//     .pauseUntilDone()
-//     .reverse()
-//     .startUntilDone(2000)
-//     .reverse()
-//     .mapEndRGB(rgb => {
-//         rgb.red -= 0x7F;
-//         rgb.green -= 0x7F;
-//         rgb.blue -= 0x7F;
-//         return rgb;
-//     })
-//     .startUntilDone(1000);
-// color.startFadeUntilDone(color.currentPalette(), color.White, 2000);
+    new color.Fade()
+        .setEndColor(0x1, 0xFF0000)
+        .setEndColor(0x2, 0x00FF00)
+        .setEndColor(0x3, 0x0000FF)
+        .setEndColor(0x4, 0xFF00FF)
+        .setEndColor(0x5, 0xFFFF00)
+        .setEndColor(0x6, 0x00FFFF)
+        .setEndColor(0xA, 0xAAAAAA)
+        .setEndColor(0xB, 0x05A2B7)
+        .setEndColor(0xC, 0x678987)
+        .setEndColor(0xD, 0x123456)
+        .setEndColor(0xF, 0xFFFFFF)
+        .start(2000)
+        .pauseUntilDone()
+        .reverse()
+        .startUntilDone(2000)
+        .reverse()
+        .mapEndRGB(rgb => {
+            rgb.red -= 0x7F;
+            rgb.green -= 0x7F;
+            rgb.blue -= 0x7F;
+            return rgb;
+        })
+        .startUntilDone(1000);
+    color.startFadeUntilDone(color.currentPalette(), color.White, 2000);
+});
