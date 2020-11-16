@@ -242,15 +242,24 @@ namespace color {
      * @param index the index to update; must be between 1 and 15
      * @param color the color to set
      */
-    //% blockId=colorSetColorAtIndex block="set color %index to %newColor"
+    //% blockId=colorSetColorAtIndex block="set color %index to %newColor || over %duration ms"
     //% weight=100
     //% index.min=1 index.max=15 index.step=1
     //% index.defl=1
+    //% duration.shadow=timePicker
     //% newColor.shadow=colorsrgb
-    export function setColor(index: number, newColor: number) {
+    export function setColor(index: number, newColor: number, duration?: number) {
         if (index <= 0 || index > 15)
             return;
-        setPalette(hexArrayToPalette([newColor]), index | 0, 1, 0);
+        if (duration) {
+            if (!currentColors)
+                currentColors = originalPalette.buf.slice();
+            const newPalette = bufferToPalette(currentColors.slice());
+            newPalette.setColor(index, newColor);
+            color.startFade(bufferToPalette(currentColors), newPalette, duration)
+        } else {
+            setPalette(hexArrayToPalette([newColor]), index | 0, 1, 0);
+        }
     }
 
     /**

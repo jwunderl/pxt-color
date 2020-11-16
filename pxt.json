@@ -17,6 +17,10 @@
         "test.ts"
     ],
     "public": false,
+    "targetVersions": {
+        "target": "1.2.9",
+        "targetId": "arcade"
+    },
     "supportedTargets": [
         "arcade"
     ],
