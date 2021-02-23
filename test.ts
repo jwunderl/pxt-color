@@ -131,6 +131,10 @@ scene.setBackgroundImage(img`
 // color.setPalette(color.Arcade)
 forever (() => {
     color.setPalette(color.Adafruit);
+    color.Darken.startScreenEffect(1000);
+    color.pauseUntilFadeDone();
+    color.Brighten.startScreenEffect(1000);
+    color.pauseUntilFadeDone();
     color.FadeToBlack.startScreenEffect(2000);
     color.RotatePalette.startScreenEffect(2000)
     new color.Fade()

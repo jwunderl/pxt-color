@@ -1,37 +1,37 @@
 namespace color {
     //% fixedInstance whenUsed block="fade to black"
     export const FadeToBlack = new FadeEffect(() => {
-        return new Fade()
+        return (new Fade())
             .setEndPalette(Black);
     });
 
     //% fixedInstance whenUsed block="fade to white"
     export const FadeToWhite = new FadeEffect(() => {
-        return new Fade()
+        return (new Fade())
             .setEndPalette(White);
     });
 
     //% fixedInstance whenUsed block="darken"
-    export const Darken = new FadeEffect(() => {
-        return new Fade()
-            .mapEndRGB(rgb => {
-                rgb.red -= 0x3F;
-                rgb.green -= 0x3F;
-                rgb.blue -= 0x3F;
-                return rgb;
-            });
-    });
+    export const Darken = new FadeEffect(darkenEffect);
+    function darkenEffect() {
+        const f = new Fade();
+        return f.mapEndHSL(hsl => {
+            hsl.luminosity *= .75;
+            hsl.luminosity *= .9;
+            return hsl;
+        });
+    }
 
     //% fixedInstance whenUsed block="brighten"
-    export const Brighten = new FadeEffect(() => {
-        return new Fade()
-            .mapEndRGB(rgb => {
-                rgb.red += 0x3F;
-                rgb.green += 0x3F;
-                rgb.blue += 0x3F;
-                return rgb;
-            });
-    });
+    export const Brighten = new FadeEffect(brightenEffect);
+    function brightenEffect() {
+        const f = new Fade();
+        return f.mapEndHSL(hsl => {
+            hsl.luminosity /= .75;
+            hsl.saturation /= .9;
+            return hsl;
+        });
+    }
 
     //% fixedInstance whenUsed block="rotate palette"
     export const RotatePalette = new FadeEffect(() => {
@@ -44,7 +44,7 @@ namespace color {
         }
         p.setColor(1, lastColor);
 
-        return new Fade()
+        return (new Fade())
             .setEndPalette(p);
     });
 }
