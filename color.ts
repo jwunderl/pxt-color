@@ -171,15 +171,11 @@ namespace color {
     //% fixedInstances
     export class Palette extends ColorBuffer { }
 
-    let fadeId = 0;
     class FadeRevert {
-        protected id: number
         constructor(
             public fade: FadeEffect,
             protected revert: (duration: number) => Fade
-        ) {
-            this.id = fadeId++;
-        }
+        ) { }
 
         applyRevert(duration: number) {
             return this.revert(duration).then(f => {
