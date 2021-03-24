@@ -171,15 +171,48 @@ namespace color {
     //% fixedInstances
     export class Palette extends ColorBuffer { }
 
-    // store the last palette and fade so that it can be cleared
-    let lastPaletteBeforeFade: Palette;
-    let lastEffect: FadeEffect;
+    let fadeId = 0;
+    class FadeRevert {
+        protected id: number
+        constructor(
+            public fade: FadeEffect,
+            protected revert: (duration: number) => Fade
+        ) {
+            this.id = fadeId++;
+        }
+
+        applyRevert(duration: number) {
+            return this.revert(duration).then(f => {
+                const effectStack = getFadingEffectStack();
+                effectStack.removeElement(this);
+                return f;
+            });
+        }
+    }
+
+    const COLOR_FADING_EFFECT_KEY = "__colorfadingeffectstate";
+    function getFadingEffectStack(): FadeRevert[] {
+        let sceneState: FadeRevert[] = game.currentScene().data[COLOR_FADING_EFFECT_KEY];
+        if (!sceneState) {
+            sceneState = clearFadingEffectStack();
+        }
+        return sceneState;
+    }
+
+    function clearFadingEffectStack(): FadeRevert[] {
+        return game.currentScene().data[COLOR_FADING_EFFECT_KEY] = [];
+    }
 
     //% fixedInstances
     export class FadeEffect implements effects.BackgroundEffect {
         protected currentFade: Fade;
+        protected startPalette: Palette;
 
-        constructor(protected fadeFactory: () => Fade) { }
+        constructor(
+            protected id: string,
+            protected fadeFactory: () => Fade,
+            protected revertsId?: string
+        ) { }
 
         /**
          * Apply this effect to the screen's color palette
@@ -189,20 +222,42 @@ namespace color {
         //% duration.shadow=timePicker
         //% weight=60 help=effects/start-screen-effect
         startScreenEffect(duration = 2000) {
-            if (lastEffect) lastEffect.stop();
-            lastEffect = this;
-            lastPaletteBeforeFade = currentPalette();
+            const effectStack = getFadingEffectStack();
+            const lastEffect = effectStack.length && effectStack[effectStack.length - 1];
+            const currPalette = currentPalette();
+            const rev = new FadeRevert(this, duration => {
+                const f = new Fade();
+
+                return f.setEndPalette(currPalette)
+                    .start(duration);
+            });
+            
+            effectStack.push(rev);
+
+            if (lastEffect) {
+                lastEffect.fade.stop();
+                if (this.revertsId && this.revertsId == lastEffect.fade.id) {
+                    this.currentFade = lastEffect.applyRevert(duration).then(f => {
+                        const effects = getFadingEffectStack();
+                        effects.removeElement(rev);
+                        return f;
+                    });
+                    return;
+                }
+            }
+            this.startPalette = currPalette;
             this.currentFade = this.fadeFactory();
 
             this.currentFade.start(duration);
         }
 
         stop() {
-            if (lastEffect == this) {
-                lastEffect = undefined;
-                if (this.currentFade) {
-                    this.currentFade.stop();
-                }
+            const effectStack = getFadingEffectStack();
+            if (this.currentFade
+                && effectStack.length
+                && effectStack[effectStack.length - 1].fade === this
+            ) {
+                this.currentFade.stop();
             }
         }
     }
@@ -298,13 +353,11 @@ namespace color {
     //% blockId=colorClearFadeEffects block="clear fade effect"
     //% weight=20
     export function clearFadeEffect() {
-        if (lastEffect) {
-            lastEffect.stop()
-        }
-
-        if (lastPaletteBeforeFade) {
-            setPalette(lastPaletteBeforeFade)
-            lastPaletteBeforeFade = undefined;
+        const effectStack = getFadingEffectStack();
+        if (effectStack.length) {
+            effectStack[effectStack.length - 1].fade.stop();
+            effectStack[0].applyRevert(0);
+            clearFadingEffectStack();
         }
     }
 

@@ -240,6 +240,8 @@ namespace color {
         if (!start || !end || start.length !== end.length)
             return;
 
+        color.clearFadeEffect();
+
         activeFade = new Fade();
         activeFade.setStartPalette(start);
         activeFade.setEndPalette(end);
@@ -253,12 +255,7 @@ namespace color {
     //% weight=79
     //% duration.shadow=timePicker
     export function startFadeFromCurrent(end: Palette, duration = 2000) {
-        if (!end)
-            return;
-
-        activeFade = new Fade();
-        activeFade.setEndPalette(end);
-        activeFade.start(duration)
+        startFade(currentPalette(), end, duration);
     }
 
     export function startFadeUntilDone(start: Palette, end: Palette, duration?: number) {

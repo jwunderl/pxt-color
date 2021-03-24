@@ -1,18 +1,20 @@
 namespace color {
+    const stateNamespace = "__coloreffectstate";
+
     //% fixedInstance whenUsed block="fade to black"
-    export const FadeToBlack = new FadeEffect(() => {
+    export const FadeToBlack = new FadeEffect("fadetoblack", () => {
         return (new Fade())
             .setEndPalette(Black);
     });
 
     //% fixedInstance whenUsed block="fade to white"
-    export const FadeToWhite = new FadeEffect(() => {
+    export const FadeToWhite = new FadeEffect("fadetowhite", () => {
         return (new Fade())
             .setEndPalette(White);
     });
 
     //% fixedInstance whenUsed block="darken"
-    export const Darken = new FadeEffect(darkenEffect);
+    export const Darken = new FadeEffect("darken", darkenEffect, "brighten");
     function darkenEffect() {
         const f = new Fade();
         return f.mapEndHSL(hsl => {
@@ -23,7 +25,7 @@ namespace color {
     }
 
     //% fixedInstance whenUsed block="brighten"
-    export const Brighten = new FadeEffect(brightenEffect);
+    export const Brighten = new FadeEffect("brighten", brightenEffect, "darken");
     function brightenEffect() {
         const f = new Fade();
         return f.mapEndHSL(hsl => {
@@ -34,7 +36,7 @@ namespace color {
     }
 
     //% fixedInstance whenUsed block="rotate palette"
-    export const RotatePalette = new FadeEffect(() => {
+    export const RotatePalette = new FadeEffect("rotate", () => {
         const l = availableColors();
         const p = color._clone(currentPalette())
 
