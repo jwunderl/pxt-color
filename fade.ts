@@ -246,6 +246,21 @@ namespace color {
         activeFade.start(duration)
     }
 
+    /**
+     *  Create a Fade from the current palette to end that occurs over the given duration
+     */
+    //% blockId=colorStartFadeFromCurrent block="fade to %end||over %duration ms"
+    //% weight=79
+    //% duration.shadow=timePicker
+    export function startFadeFromCurrent(end: Palette, duration = 2000) {
+        if (!end)
+            return;
+
+        activeFade = new Fade();
+        activeFade.setEndPalette(end);
+        activeFade.start(duration)
+    }
+
     export function startFadeUntilDone(start: Palette, end: Palette, duration?: number) {
         startFade(start, end, duration);
         pauseUntilFadeDone();
