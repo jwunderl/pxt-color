@@ -19,7 +19,7 @@ namespace color {
         const f = new Fade();
         return f.mapEndHSL(hsl => {
             hsl.luminosity *= .75;
-            hsl.luminosity *= .9;
+            hsl.saturation *= .9;
             return hsl;
         });
     }
