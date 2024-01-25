@@ -178,3 +178,23 @@ forever (() => {
         .startUntilDone(1000);
     color.startFadeUntilDone(color.currentPalette(), color.White, 2000);
 });
+
+const targetColor = 4360181;
+const parsedStrings = [
+    "#4287f5",
+    "RGB(66, 135, 245)",
+    "sRGB(66, 135, 245)",
+    "hsv(217, 73%, 96%)",
+    "hsl(217, 90%, 61%)"
+]
+
+for (const s of parsedStrings) {
+    const parsed = color.parseColorString(s);
+
+    const diff = Math.sqrt(
+        (color.unpackR(parsed) - color.unpackR(targetColor)) ** 2 +
+        (color.unpackG(parsed) - color.unpackG(targetColor)) ** 2 +
+        (color.unpackB(parsed) - color.unpackB(targetColor)) ** 2
+    )
+    console.log(diff < 100)
+}

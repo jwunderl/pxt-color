@@ -227,7 +227,7 @@ namespace color {
                 return f.setEndPalette(currPalette)
                     .start(duration);
             });
-            
+
             effectStack.push(rev);
 
             if (lastEffect) {
@@ -341,6 +341,153 @@ namespace color {
         // TODO: this and __rgb are already in colors.ts, just hidden.
         // Overloading them isn't working at the moment; figure out why and fix
         return color.hsv(hue, sat, val);
+    }
+
+    /**
+    * Convert a color string to a color. This can be of format #RRGGBB
+    * RGB(0, 0, 0), sRGB(0, 0, 0), hsl(0, 0%, 0%), or hsv(0, 0%, 0%)
+    */
+    //% blockId=parseColorString block="parse color $value"
+    //% value.defl="#000000"
+    //% weight=93
+    export function parseColorString(value: string) {
+        const hexValue = parseHexString(value);
+
+        if (hexValue >= 0) return hexValue;
+
+        const colorSpace = parseColorSpaceString(value);
+
+        if (colorSpace >= 0) return colorSpace;
+
+        return 0;
+    }
+
+    function parseHexString(value: string) {
+        let digits = "";
+        const HEX = "0123456789abcdefABCDEF"
+        for (let i = 0; i < value.length; i++) {
+            const current = value.charAt(i);
+            if (current === " " || current === "\t" || current === "#") continue;
+
+            if (HEX.indexOf(current) === -1) {
+                return -1;
+            }
+
+            digits += current;
+        }
+
+        if (digits.length === 3) {
+            let expanded = "";
+
+            for (const char of digits) {
+                expanded += char + char;
+            }
+
+            return parseInt(expanded, 16);
+        }
+        else if (digits.length === 6) {
+            return parseInt(digits, 16);
+        }
+        else {
+            return undefined;
+        }
+    }
+
+    function parseColorSpaceString(value: string) {
+        let parsingArguments = false;
+        const args: string[] = [];
+        let currentArg = "";
+        let colorSpace = "";
+
+        for (let i = 0; i < value.length; i++) {
+            const current = value.charAt(i);
+            const isWhitespace = current === " " || current === "\t";
+
+            if (!parsingArguments) {
+                if (isWhitespace) continue;
+                else if (current === "(") {
+                    parsingArguments = true;
+
+                    if (!(colorSpace === "rgb" || colorSpace === "srgb" || colorSpace === "hsv" || colorSpace === "hsl")) {
+                        return -1;
+                    }
+                }
+                else {
+                    colorSpace += current.toLowerCase();
+                }
+            }
+            else if (parsingArguments) {
+                if (isWhitespace) {
+                    if (currentArg) {
+                        args.push(currentArg)
+                        currentArg = "";
+                    }
+                    else continue;
+                }
+                else if (current === "," || current === "°") {
+                    if (!currentArg) {
+                        return -1
+                    }
+                    args.push(currentArg)
+                    currentArg = "";
+                }
+                else if ("0123456789.%".indexOf(current) !== -1) {
+                    currentArg += current;
+                }
+                else if (current === ")") break;
+                else {
+                    return -1;
+                }
+            }
+        }
+
+        if (currentArg) {
+            args.push(currentArg)
+        }
+
+        // Let opacity through, just ignore it
+        if (args.length !== 3 && args.length !== 4) {
+            return -1;
+        }
+
+        const parsedArgs: number[] = [];
+        let index = 0;
+        for (const arg of args) {
+            if (arg.charAt(arg.length - 1) === "%") {
+                const value = parseFloat(arg.substr(0, arg.length - 1));
+                if (isNaN(value)) {
+                    return -1
+                }
+
+                if (colorSpace === "rgb" || colorSpace === "srgb") {
+                    parsedArgs.push(((value / 100) * 255) | 0)
+                }
+                else if (index === 0) {
+                    return -1
+                }
+                else {
+                    parsedArgs.push(value / 100);
+                }
+            }
+            else {
+                const value = parseFloat(arg);
+                if (isNaN(value)) {
+                    return -1;
+                }
+                parsedArgs.push(value);
+            }
+
+            index ++;
+        }
+
+        if (colorSpace === "hsv") {
+            return hsv((parsedArgs[0] / 360) * 255, parsedArgs[1] * 255, parsedArgs[2] * 255)
+        }
+        else if (colorSpace === "hsl") {
+            return new HSL(parsedArgs[0], parsedArgs[1], parsedArgs[2]).hexValue();
+        }
+
+        return rgb(parsedArgs[0], parsedArgs[1], parsedArgs[2])
     }
 
     /**
