@@ -153,7 +153,7 @@ namespace color {
             if (diff === 0)
                 h = 0;
             else if (max === r)
-                h = (g - b) / diff % 6;
+                h = ((((g - b) / diff) % 6) + 6) % 6;
             else if (max === g)
                 h = (b - r) / diff + 2;
             else if (max === b)
